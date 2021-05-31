@@ -11,7 +11,7 @@ db = SQLAlchemy()
 class User(db.Model):
     """A user for the climbing site."""
 
-    __tablename__  'users'
+    __tablename__ = 'users'
 
     id = db.Column(
         db.Integer,
@@ -20,7 +20,7 @@ class User(db.Model):
 
     username = db.Column(
                 db.Text,
-                nullable-False,
+                nullable=False,
                 unique=True
     )
 
@@ -85,7 +85,7 @@ class User(db.Model):
 class SpecialLocation(db.Model):
     """A frequently visited climbing location."""
 
-    __tablename__ = 'special-locations'
+    __tablename__ = 'special_locations'
 
     id = db.Column(
         db.Integer,
@@ -185,6 +185,12 @@ class SpecialForecast(db.Model):
         primary_key=True,
     )
 
+    timestamp = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow(),
+    )
+
     location = db.relationship('SpecialLocation')
 
 class Forecast(db.Model):
@@ -195,6 +201,12 @@ class Forecast(db.Model):
     id = db.Column(
         db.Integer,
         primary_key=True,
+    )
+
+    timestamp = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow(),
     )
 
     location = db.relationship('Location')
