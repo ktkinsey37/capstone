@@ -4,6 +4,7 @@ from datetime import datetime
 
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from geoalchemy2 import Geometry
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -89,7 +90,8 @@ class SpecialLocation(db.Model):
 
     id = db.Column(
         db.Integer,
-        primary_key=True
+        primary_key=True,
+        nullable=False,
     )
 
     name = db.Column(
@@ -99,11 +101,15 @@ class SpecialLocation(db.Model):
     )
 
     location = db.Column(
-                db.text,
+                db.Text,
     )
 
-    coordinates = db.Column(
+    latitude = db.Column(
+                db.Float
+    )
 
+    longitude = db.Column(
+                db.Float
     )
 
     image_url = db.Column(
@@ -128,15 +134,12 @@ class SpecialLocation(db.Model):
                 default=False
     )
 
-    forecasts = db.relationship('SpecialForecast')
+    desert_forecasts = db.Column(
+                    db.Integer,
+                    db.ForeignKey('desert-special-forecasts.id', ondelete='CASCADE'),
+    )
 
-    # followers = db.relationship(
-    #     "User",
-    #     secondary="follows",
-    #     primaryjoin=(Follows.user_being_followed_id == id),
-    #     secondaryjoin=(Follows.user_following_id == id),
-    #     lazy='subquery'
-    # )
+    # desert_forecasts = db.relationship('DesertForecast')
 
     def __repr__(self):
         return f"<Special Location #{self.id}: {self.name}. Snowy? {self.is_snowy}, Desert? {self.is_desert}>"
@@ -158,11 +161,15 @@ class Location(db.Model):
     )
 
     location = db.Column(
-            db.text,
+            db.Text
     )
 
-    coordinates = db.Column(
+    latitude = db.Column(
+                db.Float
+    )
 
+    longitude = db.Column(
+                db.Float
     )
 
     image_url = db.Column(
@@ -175,10 +182,10 @@ class Location(db.Model):
         db.Text,
     )
 
-class SpecialForecast(db.Model):
-    """A forecast for a Special Location that may be aggregated from multiple regular forecasts"""
+class DesertForecast(db.Model):
+    """A forecast for a Desert Special Location that may be aggregated from multiple regular forecasts"""
 
-    __tablename__ = 'special-forecasts'
+    __tablename__ = 'desert-special-forecasts'
 
     id = db.Column(
         db.Integer,
@@ -191,22 +198,60 @@ class SpecialForecast(db.Model):
         default=datetime.utcnow(),
     )
 
+    location_id = db.Column(
+                    db.Integer,
+                    db.ForeignKey('special-locations.id', ondelete='CASCADE'),
+    )
+    
     location = db.relationship('SpecialLocation')
 
-class Forecast(db.Model):
-    """A forecast for a user-selected location"""
+# class MountainForecast(db.Model):
+#     """A forecast for a Mountain Special Location that may be aggregated from multiple regular forecasts"""
 
-    __tablename__ = 'forecasts'
+#     __tablename__ = 'mountain-special-forecasts'
 
-    id = db.Column(
-        db.Integer,
-        primary_key=True,
-    )
+#     id = db.Column(
+#         db.Integer,
+#         primary_key=True,
+#     )
 
-    timestamp = db.Column(
-        db.DateTime,
-        nullable=False,
-        default=datetime.utcnow(),
-    )
+#     timestamp = db.Column(
+#         db.DateTime,
+#         nullable=False,
+#         default=datetime.utcnow(),
+#     )
 
-    location = db.relationship('Location')
+#     location_id = db.Column(
+#                     db.Integer,
+#                     db.ForeignKey('special-locations.id', ondelete='CASCADE'),
+#     )
+
+#     location = db.relationship('SpecialLocation')
+
+# class Forecast(db.Model):
+#     """A forecast for a user-selected location"""
+
+#     __tablename__ = 'forecasts'
+
+#     id = db.Column(
+#         db.Integer,
+#         primary_key=True,
+#     )
+
+#     timestamp = db.Column(
+#         db.DateTime,
+#         nullable=False,
+#         default=datetime.utcnow(),
+#     )
+
+#     location = db.relationship('Location')
+
+
+def connect_db(app):
+    """Connect this database to provided Flask app.
+
+    You should call this in your Flask app.
+    """
+
+    db.app = app
+    db.init_app(app)

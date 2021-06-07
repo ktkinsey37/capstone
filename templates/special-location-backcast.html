@@ -1,4 +1,32 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
+{% for day in forecast %}
+
+<p>{{ day.date }}</p>
+
+<table>
+    <tr>
+      <th>Hour</th>
+      <th>Condition</th>
+      <th>Temp</th>
+      <th>Precipitation (in)</th>
+    </tr>
+    {% for hour in day['hours'] %}
+    <tr>
+      <td>{{hour.time}}</td>
+      <td>{{hour.condition}}</td>
+      <td>{{hour.temp}}</td>
+      <td>{{hour.precip}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+
+
+
+{% endfor %}
+
 {% endblock %}
+

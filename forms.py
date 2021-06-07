@@ -1,18 +1,20 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
+from wtforms.fields.core import BooleanField, FloatField
 from wtforms.validators import DataRequired, Email, Length
 
 
 class SpecialLocationForm(FlaskForm):
     """Form for adding/editing messages."""
 
-    name = TextAreaField('text', validators=[DataRequired()])
-    location = 
-    coordinates = 
-    image_url = 
-    description = 
-    is_desert = 
-    is_snowy = 
+    name = StringField('Name of Location', validators=[DataRequired()])
+    location = StringField('Brief description of location')
+    latitude = FloatField('Latitude, eg: 35.145645', validators=[DataRequired()])
+    longitude = FloatField('Longitude, eg: 35.145645', validators=[DataRequired()])
+    image_url = StringField('(Optional) Image URL')
+    description = TextAreaField('text', validators=[DataRequired()])
+    is_desert = BooleanField
+    is_snowy = BooleanField
 
 
 # class UserAddForm(FlaskForm):
