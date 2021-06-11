@@ -1,12 +1,13 @@
 import os
 
+from weather_helper import build_backcast, find_avg_and_highest_wind, find_avg_and_total_precip, find_avg_and_highest_temp, check_for_precip, check_for_sun, check_for_clouds
 from flask_wtf import FlaskForm
 from flask import Flask, render_template, request, jsonify, flash, redirect, session, g
 import random, requests
 from flask_debugtoolbar import DebugToolbarExtension
 from datetime import datetime, timedelta
 from forms import SpecialLocationForm
-from models import SpecialLocation, db, connect_db, DesertForecast
+from models import SpecialLocation, db, connect_db, DesertForecast, Backcast
 
 app = Flask(__name__)
 
@@ -21,14 +22,11 @@ toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
+db.create_all()
+
+
 api_key = '2f8b1aca8f8d4e1c84c155556213105'
 base_url = 'http://api.weatherapi.com/v1'
-bad_weather_words = ['sleet', 'Sleet' 'blizzard', 'Blizzard' 'drizzle', 'snow', 'Ice', 'ice', 'Thundery', 'rain', 'Drizzle', 'Snow']
-sunny_weather_words = ['Sunny', 'Clear']
-cloudy_weather_words = ['Partly cloudy', 'Cloudy', 'Overcast']
-
-lat =  35 # 38.083298
-long =  -90 # -109.569258
 
 @app.route("/")
 def homepage():
@@ -38,16 +36,14 @@ def homepage():
 
 @app.route("/special_locations/")
 def show_special_location():
-    """Show a special location."""
+    """Show a list of special locations."""
     special_locations = SpecialLocation.query.all()
-    
 
     return render_template("special-location-list.html", special_locations=special_locations)
 
 @app.route("/special_locations/add", methods=["GET", "POST"])
 def add_special_locations():
-        """
-        """
+        """Form for adding special locations. Handles showing and processing the form."""
 
         form = SpecialLocationForm()
 
@@ -70,39 +66,60 @@ def add_special_locations():
         else:
             return render_template('special-location-add.html', form=form)
 
+@app.route('/special_locations/<special_location_id>')
+def special_location_show(special_location_id):
+    """Show a special location and its details."""
 
-def check_for_precip(forecast):
-    for day in forecast:
-        for hour in day['hours']:
-            if any(word in hour['condition'] for word in bad_weather_words):
-                print('RAINY')
-            else:
-                print('NOT RAINY')
+    special_location = SpecialLocation.query.get_or_404(special_location_id)
 
-def check_for_sun_and_heat(forecast):
-    for day in forecast:
-        for hour in day['hours']:
-            raise
-    return True
+    return render_template('special-location-view.html', special_location=special_location)
 
-def build_backcast():
+@app.route('/special_locations/<special_location_id>/backcast')
+def create_and_show_full_backcast(special_location_id):
+    """Build and display a full backcast, saves the backcast parameters to rebuild it"""
 
-    # Gets the current time, and 72 hours prior. Loads these, with coords and API key, into params.
-    current = datetime.now()
-    end = current - timedelta(hours=72)
-    params = {'key':f'{api_key}', 'q':f'{lat}, {long}', 'dt':f'{end}', 'end_dt':f'{current}'}
+    special_location = SpecialLocation.query.get_or_404(special_location_id)
+    full_backcast = build_backcast(api_key, base_url, special_location)
+    avg_wind, high_wind = find_avg_and_highest_wind(full_backcast)
+    avg_temp, high_temp = find_avg_and_highest_temp(full_backcast)
+    avg_precip, total_precip = find_avg_and_total_precip(full_backcast)
+    precip_count = check_for_precip(full_backcast)
+    cloud_count = check_for_clouds(full_backcast)
+    sun_count = check_for_sun(full_backcast)
 
-    # Gets the forecast request and names it more manageably.
-    resp = requests.get(f'{base_url}/history.json', params=params)
-    forecast = resp.json()['forecast']['forecastday']
+    app_backcast = Backcast(
+                    location_id=special_location_id,
+                    sun_count=sun_count,
+                    cloud_count=cloud_count,
+                    precip_count=precip_count,
+                    total_precip=total_precip,
+                    avg_precip=avg_precip,
+                    avg_temp=avg_temp,
+                    avg_wind=avg_wind,
+                    high_temp=high_temp,
+                    high_wind=high_wind
+    )
 
-    # Builds the app-side forecast from the full forecast (makes it more manageable at this point)
-    app_forecast = []
-    for day in forecast:
-        app_day = {'date': day['date'], 'hours': []}
-        for hour in day['hour']:
-            app_hour = {'time': hour['time'], 'precip': hour['precip_in'], 'condition': hour['condition']['text'], 'temp': hour['temp_f'], 'wind': hour['wind_mph']}
-            app_day['hours'].append(app_hour)
-        app_forecast.append(app_day)
+    app_backcast.assessment = app_backcast.desert_weather_assessment()
 
-    return app_forecast
+    db.session.add(app_backcast)
+    db.session.commit()
+
+    return render_template('special-location-backcast.html', special_location=special_location, backcast=full_backcast, app_backcast=app_backcast)
+
+@app.route('/special_locations/<special_location_id>/backcasts')
+def special_location_backcasts_show(special_location_id):
+    """Show a special location and its details."""
+
+    special_location = SpecialLocation.query.get_or_404(special_location_id)
+
+    backcasts = Backcast.query.filter_by(location_id=special_location_id).all()
+
+    return render_template('special-location-backcast-list.html', special_location=special_location, backcasts=backcasts)
+
+@app.route('/backcast/<backcast_id>', methods=["GET", "POST"])
+def show_full_or_edit_backcast(backcast_id):
+
+    backcast = Backcast.query.get_or_404(backcast_id)
+
+    return str(backcast.assessment)

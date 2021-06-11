@@ -7,14 +7,14 @@ from wtforms.validators import DataRequired, Email, Length
 class SpecialLocationForm(FlaskForm):
     """Form for adding/editing messages."""
 
-    name = StringField('Name of Location', validators=[DataRequired()])
-    location = StringField('Brief description of location')
+    name = StringField('Name of Location', validators=[DataRequired()],  render_kw={"placeholder": "Indian Creek"})
+    location = StringField('Brief description of how to get to location', render_kw={"placeholder": "An hour south of Moab, UT"})
     latitude = FloatField('Latitude, eg: 35.145645', validators=[DataRequired()])
     longitude = FloatField('Longitude, eg: 35.145645', validators=[DataRequired()])
     image_url = StringField('(Optional) Image URL')
-    description = TextAreaField('text', validators=[DataRequired()])
-    is_desert = BooleanField
-    is_snowy = BooleanField
+    description = TextAreaField('Brief description of the area', validators=[DataRequired()])
+    is_desert = BooleanField('Is this a Sandstone location?')
+    is_snowy = BooleanField('Is this an alpine location?')
 
 
 # class UserAddForm(FlaskForm):

@@ -86,12 +86,12 @@ class User(db.Model):
 class SpecialLocation(db.Model):
     """A frequently visited climbing location."""
 
-    __tablename__ = 'special_locations'
+    __tablename__ = 'special-locations'
 
     id = db.Column(
         db.Integer,
         primary_key=True,
-        nullable=False,
+        nullable=False
     )
 
     name = db.Column(
@@ -114,7 +114,7 @@ class SpecialLocation(db.Model):
 
     image_url = db.Column(
                 db.Text,
-                default="",
+                default=""
                 # need a default image
     )
 
@@ -133,13 +133,6 @@ class SpecialLocation(db.Model):
                 nullable=False,
                 default=False
     )
-
-    desert_forecasts = db.Column(
-                    db.Integer,
-                    db.ForeignKey('desert-special-forecasts.id', ondelete='CASCADE'),
-    )
-
-    # desert_forecasts = db.relationship('DesertForecast')
 
     def __repr__(self):
         return f"<Special Location #{self.id}: {self.name}. Snowy? {self.is_snowy}, Desert? {self.is_desert}>"
@@ -189,21 +182,21 @@ class DesertForecast(db.Model):
 
     id = db.Column(
         db.Integer,
-        primary_key=True,
+        primary_key=True
     )
 
     timestamp = db.Column(
         db.DateTime,
         nullable=False,
-        default=datetime.utcnow(),
+        default=datetime.utcnow()
     )
 
     location_id = db.Column(
                     db.Integer,
-                    db.ForeignKey('special-locations.id', ondelete='CASCADE'),
+                    db.ForeignKey('special-locations.id')
     )
     
-    location = db.relationship('SpecialLocation')
+    location = db.relationship('SpecialLocation', backref='forecast', cascade='all, delete')
 
 # class MountainForecast(db.Model):
 #     """A forecast for a Mountain Special Location that may be aggregated from multiple regular forecasts"""
@@ -228,23 +221,111 @@ class DesertForecast(db.Model):
 
 #     location = db.relationship('SpecialLocation')
 
-# class Forecast(db.Model):
-#     """A forecast for a user-selected location"""
+class Backcast(db.Model):
+    """A backcast"""
 
-#     __tablename__ = 'forecasts'
+    __tablename__ = 'backcasts'
 
-#     id = db.Column(
-#         db.Integer,
-#         primary_key=True,
-#     )
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
 
-#     timestamp = db.Column(
-#         db.DateTime,
-#         nullable=False,
-#         default=datetime.utcnow(),
-#     )
+    location_id = db.Column(
+                    db.Integer,
+                    db.ForeignKey('special-locations.id', ondelete='CASCADE'),
+    )
 
-#     location = db.relationship('Location')
+    timestamp = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow(),
+    )
+
+    sun_count = db.Column(
+                db.Integer,
+                nullable=False
+    )
+
+    cloud_count = db.Column(
+                db.Integer,
+                nullable=False
+    )
+
+    precip_count = db.Column(
+                    db.Integer,
+                    nullable=False
+    )
+
+    total_precip = db.Column(
+                    db.Float,
+                    nullable=False
+    )
+
+    avg_precip = db.Column(
+                    db.Float,
+                    nullable=False
+    )
+
+    avg_temp = db.Column(
+                    db.Float,
+                    nullable=False
+    )
+
+    high_temp = db.Column(
+                    db.Float,
+                    nullable=False
+    )
+
+    avg_wind = db.Column(
+                    db.Float,
+                    nullable=False
+    )
+
+    high_wind = db.Column(
+                    db.Float,
+                    nullable=False
+    )
+
+    assessment = db.Column(
+                db.Text,
+                nullable=False
+    )
+
+    user_report = db.Column(
+                db.Text,
+    )
+
+    location = db.relationship('SpecialLocation', backref='backcast', cascade='all, delete')
+
+    
+    def desert_weather_assessment(self):
+        """Assesses the weather to determine if a sandstone area should be climbed on.
+        """
+        
+        if self.total_precip == 0:
+            return 'No precipitation in the recent past, climb on.'
+        if self.total_precip > 2:
+            return "There's been over two inches(~5cm) of precip in the past 72 hrs, you probably shouldn't climb."
+        if self.sun_count > 30 and self.high_temp > 40:
+            return f"It's rained {self.total_precip} recently here, but also been sunny for {self.sun_count} of the last 72 hours and has reached {self.high_temp}F. Use your discretion."
+        if self.precip_count > 30 and self.avg_temp < 50:
+            return f"It's rained {self.total_precip} recently here, over {self.precip_count} of the last 72 hours, with an average temp of {self.avg_temp}F. Use your discretion. Please don't destroy classic routes."
+        return f"Not sure how to assess this information."
+
+    def mountain_weather_assessment(self):
+        """Assesses the weather to determine if an alpine area should be climbed on.
+        """
+        
+        if self.total_precip < 6:
+            return 'Less than 6 inches of precipitation in the past 30 days, climb on.'
+        if self.total_precip > 36:
+            return "There's been over 3 feet of precip in the past 30 days, you probably shouldn't climb."
+        if self.sun_count > 30 and self.high_temp > 40:
+            return f"It's rained {self.total_precip} recently here, but also been sunny for {self.sun_count} of the last 72 hours and has reached {self.high_temp}F. Use your discretion."
+        if self.precip_count > 30 and self.avg_temp < 50:
+            return f"It's rained {self.total_precip} recently here, over {self.precip_count} of the last 72 hours, with an average temp of {self.avg_temp}F. Use your discretion. Please don't destroy classic routes."
+        return f"Not sure how to assess this information."
 
 
 def connect_db(app):

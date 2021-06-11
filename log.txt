@@ -2,21 +2,29 @@
 5/31: 8:30-10
 6/3 10:30-11:30, 3:00-4:00
 6/6 11:15-3:15
-6/7 10:00-
+6/7 10:00-12:00
+6/8 8:00-10:00, 5-6
+6/9 8-10, 4-6
+6/10 4-5
 
 To Do:
 
-Figure out how to store a backcast now that it's built
-Display the backcast
-Build the page/route for special locations
-ID the logic for dry sandstone
+
+Create form for user to add report to backcast
+Tidy up how backcasts look (line up side by side at least)
+JS feature that allows you to hide show the full backcast (can then just have full backcasts always show? maybe make it an ajax request?)
 ID the logic for snowy mountains
 Build a backcast for mountains
-Build the page for backcasts
-Get rid of the date/day part and just list hours in forecast
+
 
 Ideas for storing backcast:
 -process it and store it without excess weather: "is_too_wet":"True"
 
-How do deb.relationships and foreignkeys work, im having trouble
-Whats the best way to store backcasts? Should I store all that info?
+
+
+Assessment for mountains:
+
+Find high temperature,
+find average temperature,
+find total precip,
+find avg precip

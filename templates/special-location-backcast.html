@@ -2,8 +2,12 @@
 
 {% block content %}
 
-{% for day in forecast %}
+<h1>{{special_location.name}}</h1>
 
+
+{% for day in backcast %}
+
+{% if day['hours'][1] %}
 <p>{{ day.date }}</p>
 
 <table>
@@ -21,12 +25,17 @@
       <td>{{hour.precip}}</td>
     </tr>
     {% endfor %}
+    
   </table>
 
-
+  {% endif %}
 
 
 {% endfor %}
+
+<form method="GET" action="/special_locations/{{special_location.id}}">
+  <button class="btn btn-outline-primary btn-sm">Return to location</button>
+</form>
 
 {% endblock %}
 

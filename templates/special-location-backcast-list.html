@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ special_location.name }}</h1>
+
+<table>
+    <tr>
+      <th>Backcast ID</th>
+      <th>Timestamp</th>
+      <th>Total precipitation</th>
+      <th>Climbing assessment</th>
+    </tr>
+
+    {% for backcast in backcasts %}
+
+    <tr>
+      <td>{{backcast.id}}</td>
+      <td>{{backcast.timestamp}}</td>
+      <td>{{backcast.total_precip}}</td>
+      <td>{{backcast.assessment}}</td>
+      <td>
+        <form method="GET" action="/backcast/{{backcast.id}}">
+            <button class="btn btn-outline-primary btn-sm">View/add trip report to this backcast</button>
+        </form>
+        </td>
+    </tr>
+
+
+    {% endfor %}
+</table>
+
+<form method="GET" action="/special_locations/{{special_location.id}}">
+    <button class="btn btn-outline-primary btn-sm">Return to location</button>
+</form>
+
+{% endblock %}
+

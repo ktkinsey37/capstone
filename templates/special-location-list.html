@@ -2,12 +2,14 @@
 
 {% block content %}
 
-{% for location in special_locations %}
+<ul>{% for location in special_locations %}
+    <li><a href="/special_locations/{{location.id}}">{{ location.name }}</a></li>
+{% endfor %}</ul>
 
-<a href="">{{ location.name }}</a>
 
-
-{% endfor %}
+<form method="GET" action="/special_locations/add">
+    <button class="btn btn-outline-primary btn-sm">Add New Location</button>
+</form>
 
 {% endblock %}
 
