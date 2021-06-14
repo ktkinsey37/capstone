@@ -7,7 +7,7 @@ import random, requests
 from flask_debugtoolbar import DebugToolbarExtension
 from datetime import datetime, timedelta
 from forms import SpecialLocationForm
-from models import SpecialLocation, db, connect_db, DesertForecast, Backcast
+from models import SpecialLocation, db, connect_db, Backcast
 
 app = Flask(__name__)
 
@@ -24,7 +24,7 @@ connect_db(app)
 
 db.create_all()
 
-
+google_api = 'AIzaSyANrWPh7m9NNCAX9usYfXtrb1mS7RDPkaU'
 api_key = '2f8b1aca8f8d4e1c84c155556213105'
 base_url = 'http://api.weatherapi.com/v1'
 

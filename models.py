@@ -175,28 +175,28 @@ class Location(db.Model):
         db.Text,
     )
 
-class DesertForecast(db.Model):
-    """A forecast for a Desert Special Location that may be aggregated from multiple regular forecasts"""
+# class DesertForecast(db.Model):
+#     """A forecast for a Desert Special Location that may be aggregated from multiple regular forecasts"""
 
-    __tablename__ = 'desert-special-forecasts'
+#     __tablename__ = 'desert-special-forecasts'
 
-    id = db.Column(
-        db.Integer,
-        primary_key=True
-    )
+#     id = db.Column(
+#         db.Integer,
+#         primary_key=True
+#     )
 
-    timestamp = db.Column(
-        db.DateTime,
-        nullable=False,
-        default=datetime.utcnow()
-    )
+#     timestamp = db.Column(
+#         db.DateTime,
+#         nullable=False,
+#         default=datetime.utcnow()
+#     )
 
-    location_id = db.Column(
-                    db.Integer,
-                    db.ForeignKey('special-locations.id')
-    )
+#     location_id = db.Column(
+#                     db.Integer,
+#                     db.ForeignKey('special-locations.id')
+#     )
     
-    location = db.relationship('SpecialLocation', backref='forecast', cascade='all, delete')
+#     location = db.relationship('SpecialLocation', backref='forecast', cascade='all, delete')
 
 # class MountainForecast(db.Model):
 #     """A forecast for a Mountain Special Location that may be aggregated from multiple regular forecasts"""

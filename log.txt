@@ -24,7 +24,3 @@ Ideas for storing backcast:
 
 Assessment for mountains:
 
-Find high temperature,
-find average temperature,
-find total precip,
-find avg precip
