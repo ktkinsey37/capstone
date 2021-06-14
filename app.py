@@ -1,12 +1,13 @@
 import os
 
+from capstone_api_keys import google_api_key, api_key
 from weather_helper import build_backcast, find_avg_and_highest_wind, find_avg_and_total_precip, find_avg_and_highest_temp, check_for_precip, check_for_sun, check_for_clouds
 from flask_wtf import FlaskForm
 from flask import Flask, render_template, request, jsonify, flash, redirect, session, g
 import random, requests
 from flask_debugtoolbar import DebugToolbarExtension
 from datetime import datetime, timedelta
-from forms import SpecialLocationForm
+from forms import SpecialLocationForm, BackcastEditForm
 from models import SpecialLocation, db, connect_db, Backcast
 
 app = Flask(__name__)
@@ -120,6 +121,30 @@ def special_location_backcasts_show(special_location_id):
 @app.route('/backcast/<backcast_id>', methods=["GET", "POST"])
 def show_full_or_edit_backcast(backcast_id):
 
-    backcast = Backcast.query.get_or_404(backcast_id)
+        form = BackcastEditForm()
 
-    return str(backcast.assessment)
+        # if form.validate_on_submit():
+
+            # full_backcast = build_backcast(api_key, base_url, special_location)
+
+            
+        #     special_location = SpecialLocation(name=form.name.data,
+        #                                         location = form.location.data,
+        #                                         latitude=form.latitude.data,
+        #                                         longitude=form.longitude.data,
+        #                                         image_url=form.image_url.data,
+        #                                         description=form.description.data,
+        #                                         is_desert=form.is_desert.data,
+        #                                         is_snowy=form.is_snowy.data
+        #                                         )
+        #     db.session.add(special_location)
+        #     db.session.commit()
+                    
+        #     return redirect("/")
+
+        # else:
+        #     return render_template('special-location-add.html', form=form)
+
+@app.route('/backcast/new_backcast')
+def create_custom_location_backcast():
+    return True
