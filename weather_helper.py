@@ -73,12 +73,15 @@ def build_backcast(api_key, base_url, location):
 
     # Gets the current time, and 72 hours prior. Loads these, with coords and API key, into params.
     current = datetime.now()
+
     if location.is_desert:
         end = current - timedelta(hours=72)
     if location.is_snowy:
-        end = current - timedelta(days=30)
+        end = current - timedelta(days=7) #need to upgrade to get farther back
+    else:
+        end = current - timedelta(hours=48)
     
-    params = {'key':f'{api_key}', 'q':f'{location.latitude}, {location.longitude}', 'dt':f'{end}', 'end_dt':f'{current}'}
+    params = {'key':f'{api_key}', 'q':f'{location.latitude},{location.longitude}', 'dt':f'{end}', 'end_dt':f'{current}'}
 
     # Gets the forecast request and names it more manageably.
     resp = requests.get(f'{base_url}/history.json', params=params)
@@ -94,3 +97,39 @@ def build_backcast(api_key, base_url, location):
         app_forecast.append(app_day)
 
     return app_forecast
+
+class Location:
+    def __init__(self, latitude, longitude, is_desert, is_snowy):
+        self.latitude = latitude
+        self.longitude = longitude
+        self.is_desert = is_desert
+        self.is_snowy = is_snowy
+
+
+def desert_weather_assessment(backcast):
+    """Assesses the weather to determine if a sandstone area should be climbed on.
+    """
+    
+    if backcast.total_precip == 0:
+        return 'No precipitation in the recent past, climb on.'
+    if backcast.total_precip > 2:
+        return "There's been over two inches(~5cm) of precip in the past 72 hrs, you probably shouldn't climb."
+    if backcast.sun_count > 30 and backcast.high_temp > 40:
+        return f"It's rained {backcast.total_precip} recently here, but also been sunny for {backcast.sun_count} of the last 72 hours and has reached {backcast.high_temp}F. Use your discretion."
+    if backcast.precip_count > 30 and backcast.avg_temp < 50:
+        return f"It's rained {backcast.total_precip} recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. Use your discretion and please stay safe."
+    return f"Not sure how to assess this information."
+
+def mountain_weather_assessment(backcast):
+    """Assesses the weather to determine if an alpine area should be climbed on.
+    """
+    
+    if backcast.total_precip < 6:
+        return 'Less than 6 inches of precipitation in the past 7 days, climb on.'
+    if backcast.total_precip > 36:
+        return f"There's been {backcast.total_precip} of precip in the past 7 days, you probably shouldn't climb."
+    if backcast.sun_count > 72 and backcast.high_temp > 40:
+        return f"It's precipitated {backcast.total_precip} inches recently here, but also been sunny for {backcast.sun_count} hours and reached {backcast.high_temp} degrees F. Use your discretion."
+    if backcast.precip_count > 30 and backcast.avg_temp <= 40:
+        return f"It's precipitated {backcast.total_precip} inches recently here, over {backcast.precip_count} hours out of the last 7 days, with an average temp of {backcast.avg_temp}F. Use your discretion and please stay safe."
+    return f"Not sure how to assess this information."

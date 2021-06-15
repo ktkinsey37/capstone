@@ -11,32 +11,10 @@
     <button class="btn btn-outline-primary btn-sm">Add New Location</button>
 </form>
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Event Click LatLng</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='google_map.css') }}" />
-    <script src="{{ url_for('static', filename='google_map.js') }}"></script>
-  </head>
-  <body>
-    <div id="map"></div>
+<form method="GET" action="/">
+  <button class="btn btn-outline-primary btn-sm">Home</button>
+</form>
 
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtzzyq1x2biXhsXPNxkpljz18zrwrB0jQ&callback=initMap&libraries=&v=weekly"
-      async
-    ></script>
-  </body>
-</html>
-
-<form>
-    <label>Latitude:</label><br>
-    <input type="text" id="latbox"><br>
-    <label>Longitude</label><br>
-    <input type="text" id="lngbox">
-    <button class="btn btn-outline-primary btn-sm">Build custom backcast</button>
-  </form>
 
 {% endblock %}
 

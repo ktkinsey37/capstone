@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<a href="/special_locations/">Special Locations</a>
+<br>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Event Click LatLng</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='google_map.css') }}" />
+    <script src="{{ url_for('static', filename='google_map.js') }}"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtzzyq1x2biXhsXPNxkpljz18zrwrB0jQ&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+  </body>
+</html>
+
+<form method="POST" action="/backcast/new_backcast">
+    <label>Latitude:</label><br>
+    <input type="text" name="latbox" id="latbox"><br>
+    <label>Longitude</label><br>
+    <input type="text" name="lngbox" id="lngbox"><br><br>
+    <button class="btn btn-outline-primary btn-sm">Build custom backcast</button>
+  </form>
+
+{% endblock %}

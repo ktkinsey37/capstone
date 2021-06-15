@@ -46,7 +46,7 @@ class User(db.Model):
         return f"<User #{self.id}: {self.username}, {self.email}>"
 
     @classmethod
-    def signup(cls, username, email, password, image_url):
+    def signup(cls, username, email, password):
         """Sign up user.
 
         Hashes password and adds user to system.
@@ -137,7 +137,7 @@ class SpecialLocation(db.Model):
     def __repr__(self):
         return f"<Special Location #{self.id}: {self.name}. Snowy? {self.is_snowy}, Desert? {self.is_desert}>"
 
-class Location(db.Model):
+class CustomLocation(db.Model):
     """"""
 
     __tablename__ = 'locations'
@@ -174,52 +174,6 @@ class Location(db.Model):
     description = db.Column(
         db.Text,
     )
-
-# class DesertForecast(db.Model):
-#     """A forecast for a Desert Special Location that may be aggregated from multiple regular forecasts"""
-
-#     __tablename__ = 'desert-special-forecasts'
-
-#     id = db.Column(
-#         db.Integer,
-#         primary_key=True
-#     )
-
-#     timestamp = db.Column(
-#         db.DateTime,
-#         nullable=False,
-#         default=datetime.utcnow()
-#     )
-
-#     location_id = db.Column(
-#                     db.Integer,
-#                     db.ForeignKey('special-locations.id')
-#     )
-    
-#     location = db.relationship('SpecialLocation', backref='forecast', cascade='all, delete')
-
-# class MountainForecast(db.Model):
-#     """A forecast for a Mountain Special Location that may be aggregated from multiple regular forecasts"""
-
-#     __tablename__ = 'mountain-special-forecasts'
-
-#     id = db.Column(
-#         db.Integer,
-#         primary_key=True,
-#     )
-
-#     timestamp = db.Column(
-#         db.DateTime,
-#         nullable=False,
-#         default=datetime.utcnow(),
-#     )
-
-#     location_id = db.Column(
-#                     db.Integer,
-#                     db.ForeignKey('special-locations.id', ondelete='CASCADE'),
-#     )
-
-#     location = db.relationship('SpecialLocation')
 
 class Backcast(db.Model):
     """A backcast"""
@@ -297,36 +251,6 @@ class Backcast(db.Model):
     )
 
     location = db.relationship('SpecialLocation', backref='backcast', cascade='all, delete')
-
-    
-    def desert_weather_assessment(self):
-        """Assesses the weather to determine if a sandstone area should be climbed on.
-        """
-        
-        if self.total_precip == 0:
-            return 'No precipitation in the recent past, climb on.'
-        if self.total_precip > 2:
-            return "There's been over two inches(~5cm) of precip in the past 72 hrs, you probably shouldn't climb."
-        if self.sun_count > 30 and self.high_temp > 40:
-            return f"It's rained {self.total_precip} recently here, but also been sunny for {self.sun_count} of the last 72 hours and has reached {self.high_temp}F. Use your discretion."
-        if self.precip_count > 30 and self.avg_temp < 50:
-            return f"It's rained {self.total_precip} recently here, over {self.precip_count} of the last 72 hours, with an average temp of {self.avg_temp}F. Use your discretion. Please don't destroy classic routes."
-        return f"Not sure how to assess this information."
-
-    def mountain_weather_assessment(self):
-        """Assesses the weather to determine if an alpine area should be climbed on.
-        """
-        
-        if self.total_precip < 6:
-            return 'Less than 6 inches of precipitation in the past 30 days, climb on.'
-        if self.total_precip > 36:
-            return "There's been over 3 feet of precip in the past 30 days, you probably shouldn't climb."
-        if self.sun_count > 30 and self.high_temp > 40:
-            return f"It's rained {self.total_precip} recently here, but also been sunny for {self.sun_count} of the last 72 hours and has reached {self.high_temp}F. Use your discretion."
-        if self.precip_count > 30 and self.avg_temp < 50:
-            return f"It's rained {self.total_precip} recently here, over {self.precip_count} of the last 72 hours, with an average temp of {self.avg_temp}F. Use your discretion. Please don't destroy classic routes."
-        return f"Not sure how to assess this information."
-
 
 def connect_db(app):
     """Connect this database to provided Flask app.

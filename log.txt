@@ -6,6 +6,8 @@
 6/8 8:00-10:00, 5-6
 6/9 8-10, 4-6
 6/10 4-5
+6/14 1-3, 430-5
+6/15 8:30-9:30, 3:30-4:30
 
 To Do:
 
@@ -15,6 +17,8 @@ Tidy up how backcasts look (line up side by side at least)
 JS feature that allows you to hide show the full backcast (can then just have full backcasts always show? maybe make it an ajax request?)
 ID the logic for snowy mountains
 Build a backcast for mountains
+add mark
+use html5 geolocation
 
 
 Ideas for storing backcast:
