@@ -98,7 +98,7 @@ def build_backcast(api_key, base_url, location):
 
     return app_forecast
 
-class Location:
+class LocationBuilder:
     def __init__(self, latitude, longitude, is_desert, is_snowy):
         self.latitude = latitude
         self.longitude = longitude

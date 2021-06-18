@@ -83,15 +83,21 @@ class User(db.Model):
 
         return False
 
-class SpecialLocation(db.Model):
+class Location(db.Model):
     """A frequently visited climbing location."""
 
-    __tablename__ = 'special-locations'
+    __tablename__ = 'locations'
 
     id = db.Column(
         db.Integer,
         primary_key=True,
         nullable=False
+    )
+
+    user_id = db.Column(
+                    db.Integer,
+                    db.ForeignKey('users.id', ondelete='CASCADE'),
+                    nullable=False
     )
 
     name = db.Column(
@@ -134,46 +140,10 @@ class SpecialLocation(db.Model):
                 default=False
     )
 
+    backcasts = db.relationship('Backcast')
+
     def __repr__(self):
-        return f"<Special Location #{self.id}: {self.name}. Snowy? {self.is_snowy}, Desert? {self.is_desert}>"
-
-class CustomLocation(db.Model):
-    """"""
-
-    __tablename__ = 'locations'
-
-    id = db.Column(
-        db.Integer,
-        primary_key=True
-    )
-
-    name = db.Column(
-        db.Text,
-        nullable=False,
-        unique=True,
-    )
-
-    location = db.Column(
-            db.Text
-    )
-
-    latitude = db.Column(
-                db.Float
-    )
-
-    longitude = db.Column(
-                db.Float
-    )
-
-    image_url = db.Column(
-        db.Text,
-        default="",
-        # need a default image
-    )
-
-    description = db.Column(
-        db.Text,
-    )
+        return f"<Location #{self.id}: {self.name}. Snowy? {self.is_snowy}, Desert? {self.is_desert}>"
 
 class Backcast(db.Model):
     """A backcast"""
@@ -187,7 +157,8 @@ class Backcast(db.Model):
 
     location_id = db.Column(
                     db.Integer,
-                    db.ForeignKey('special-locations.id', ondelete='CASCADE'),
+                    db.ForeignKey('locations.id', ondelete='CASCADE'),
+                    nullable=False
     )
 
     timestamp = db.Column(
@@ -250,7 +221,7 @@ class Backcast(db.Model):
                 db.Text,
     )
 
-    location = db.relationship('SpecialLocation', backref='backcast', cascade='all, delete')
+    location = db.relationship('Location', backref='backcast')
 
 def connect_db(app):
     """Connect this database to provided Flask app.

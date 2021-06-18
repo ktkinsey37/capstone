@@ -4,7 +4,7 @@ from wtforms.fields.core import BooleanField, FloatField
 from wtforms.validators import DataRequired, Email, Length
 
 
-class SpecialLocationForm(FlaskForm):
+class LocationForm(FlaskForm):
     """Form for adding/editing messages."""
 
     name = StringField('Name of Location', validators=[DataRequired()],  render_kw={"placeholder": "Indian Creek"})

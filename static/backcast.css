@@ -1,0 +1,7 @@
+.hour_by_hour_box {
+    display: inline-block;
+}
+
+.container {
+    white-space: nowrap
+}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<ul>{% for location in locations %}
+    <li><a href="/user_locations/{{location.id}}">{{ location.name }}</a></li>
+{% endfor %}</ul>
+
+{% if g.user.authority == "admin" %}
+<form method="GET" action="/user_locations/add">
+    <button class="btn btn-outline-primary btn-sm">Add New User Location</button>
+</form>
+{% endif %}
+
+<form method="GET" action="/">
+  <button class="btn btn-outline-primary btn-sm">Home</button>
+</form>
+
+
+{% endblock %}
+

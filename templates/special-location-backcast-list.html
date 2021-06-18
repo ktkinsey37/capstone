@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>{{ special_location.name }}</h1>
+<h1>{{ location.name }}</h1>
 
 <table>
     <tr>
@@ -30,7 +30,7 @@
     {% endfor %}
 </table>
 
-<form method="GET" action="/special_locations/{{special_location.id}}">
+<form method="GET" action="/global_locations/{{location.id}}">
     <button class="btn btn-outline-primary btn-sm">Return to location</button>
 </form>
 

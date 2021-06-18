@@ -5,7 +5,7 @@
 {% block content %}
 
   <div class="container">
-    <form method="POST" id="special_location_form">
+    <form method="POST" id="location_form">
       {{ form.hidden_tag() }}
 
       {% for field in form if field.widget.input_type != 'hidden' %}

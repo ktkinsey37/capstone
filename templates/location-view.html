@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ location.name }}</h1>
+{{location.location}}
+<br>
+<div class="container">{{location.description}}</div>
+
+<br> <br>
+Coordinates: {{ location.latitude, location.longitude }}
+
+<form method="GET" action="/locations/{{location.id}}/backcast">
+    <button class="btn btn-outline-primary btn-sm">Create a Backcast</button>
+</form>
+<br>
+<form method="GET" action="/locations/{{location.id}}/backcasts">
+    <button class="btn btn-outline-primary btn-sm">View this area's backcasts</button>
+</form>
+<br>
+<form method="GET" action="/global_locations">
+    <button class="btn btn-outline-primary btn-sm">Return to global locations</button>
+</form>
+
+{% endblock %}
