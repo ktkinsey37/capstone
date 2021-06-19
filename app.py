@@ -75,7 +75,7 @@ def signup():
             db.session.commit()
 
         except IntegrityError:
-            flash("Username already taken", 'danger')
+            flash("Username or email already taken", 'danger')
             return render_template('signup.html', form=form)
 
         do_login(user)
@@ -112,7 +112,7 @@ def logout():
 
     flash("Successfully logged out!")
     session.pop(CURR_USER_KEY)
-    return redirect('/login', code=302)
+    return redirect('/', code=302)
 
 
 @app.route("/")
@@ -230,44 +230,6 @@ def add_user_location():
         else:
             return render_template('location-add.html', form=form)
 
-# @app.route('/locations/<location_id>/backcast')
-# def create_and_show_full_backcast(location_id):
-#     """Build and display a full backcast, saves the backcast parameters to rebuild it"""
-
-#     location = Location.query.get_or_404(location_id)
-#     full_backcast = build_backcast(api_key, base_url, location)
-#     avg_wind, high_wind = find_avg_and_highest_wind(full_backcast)
-#     avg_temp, high_temp = find_avg_and_highest_temp(full_backcast)
-#     avg_precip, total_precip = find_avg_and_total_precip(full_backcast)
-#     precip_count = check_for_precip(full_backcast)
-#     cloud_count = check_for_clouds(full_backcast)
-#     sun_count = check_for_sun(full_backcast)
-
-#     app_backcast = Backcast(
-#                     location_id=location_id,
-#                     sun_count=sun_count,
-#                     cloud_count=cloud_count,
-#                     precip_count=precip_count,
-#                     total_precip=total_precip,
-#                     avg_precip=avg_precip,
-#                     avg_temp=avg_temp,
-#                     avg_wind=avg_wind,
-#                     high_temp=high_temp,
-#                     high_wind=high_wind
-#     )
-
-#     if location.is_snowy:
-#         app_backcast.assessment = mountain_weather_assessment(app_backcast)
-#     elif location.is_desert:
-#         app_backcast.assessment = desert_weather_assessment(app_backcast)
-#     else:
-#         app_backcast.assessment = ""
-
-#     db.session.add(app_backcast)
-#     db.session.commit()
-
-#     return render_template('backcast.html', location=location, backcast=full_backcast, app_backcast=app_backcast)
-
 @app.route('/locations/<location_id>/backcasts')
 def location_backcasts_show(location_id):
     """Show a location and its details."""
@@ -295,16 +257,21 @@ def show_full_or_edit_backcast(backcast_id):
             return render_template("backcast.html", backcast=backcast)
 
         else:
-            return render_template('backcast-edit.html', form=form)
+            return render_template('backcast-edit.html', form=form, backcast=backcast)
 
 @app.route('/backcast/new_backcast/<int:location_id>', methods=["GET", "POST"])
 def create_custom_location_backcast(location_id):
-
-    try:
-        location = LocationBuilder(request.form['latbox'], request.form['lngbox'], False, False)
-    except:
+    env = request.form['env']
+    if location_id == 0:
+        env = request.form['env']
+        if env == 'alpbox':
+            location = LocationBuilder(request.form['latbox'], request.form['lngbox'], False, True)
+        if env == 'desbox':
+            location = LocationBuilder(request.form['latbox'], request.form['lngbox'], True, False)
+        elif env == 'neither':
+            location = LocationBuilder(request.form['latbox'], request.form['lngbox'], False, False)
+    else:
         location = Location.query.get_or_404(location_id)
-
 
     full_backcast = build_backcast(api_key, base_url, location)
     avg_wind, high_wind = find_avg_and_highest_wind(full_backcast)
@@ -315,6 +282,7 @@ def create_custom_location_backcast(location_id):
     sun_count = check_for_sun(full_backcast)
 
     app_backcast = Backcast(
+                    location_id=location_id,
                     sun_count=sun_count,
                     cloud_count=cloud_count,
                     precip_count=precip_count,
@@ -326,31 +294,22 @@ def create_custom_location_backcast(location_id):
                     high_wind=high_wind
     )
 
+    if location.is_snowy:
+        app_backcast.assessment = mountain_weather_assessment(app_backcast)
+    elif location.is_desert:
+        app_backcast.assessment = desert_weather_assessment(app_backcast)
+    else:
+        app_backcast.assessment = "The best we can provide is the hour-by-hour"
+
+    if g.user:
+        db.session.add(app_backcast)
+        db.session.commit()
+
     return render_template('backcast.html', backcast=full_backcast, app_backcast=app_backcast, location=location)
 
-# @app.route('/backcast/new_user_backcast', methods=["POST"])
-# def create_custom_location_backcast():
+@app.route('/backcast/<int:location_id>', methods=["GET", "POST"])
+def show_backcast_list_for_location(location_id):
 
-#     location = LocationBuilder(request.form['latbox'], request.form['lngbox'], False, False)
+    locations = Location.query.filter_by(location_id=location_id).all()
 
-#     full_backcast = build_backcast(api_key, base_url, location)
-#     avg_wind, high_wind = find_avg_and_highest_wind(full_backcast)
-#     avg_temp, high_temp = find_avg_and_highest_temp(full_backcast)
-#     avg_precip, total_precip = find_avg_and_total_precip(full_backcast)
-#     precip_count = check_for_precip(full_backcast)
-#     cloud_count = check_for_clouds(full_backcast)
-#     sun_count = check_for_sun(full_backcast)
-
-#     app_backcast = Backcast(
-#                     sun_count=sun_count,
-#                     cloud_count=cloud_count,
-#                     precip_count=precip_count,
-#                     total_precip=total_precip,
-#                     avg_precip=avg_precip,
-#                     avg_temp=avg_temp,
-#                     avg_wind=avg_wind,
-#                     high_temp=high_temp,
-#                     high_wind=high_wind
-#     )
-
-#     return render_template('backcast.html', backcast=full_backcast, app_backcast=app_backcast, location=location)
+    return render_template()

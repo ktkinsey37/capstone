@@ -75,11 +75,13 @@ def build_backcast(api_key, base_url, location):
     current = datetime.now()
 
     if location.is_desert:
-        end = current - timedelta(hours=72)
-    if location.is_snowy:
+        end = current - timedelta(days=3)
+        print("HITTING DESERT ROUTE")
+    elif location.is_snowy:
         end = current - timedelta(days=7) #need to upgrade to get farther back
     else:
-        end = current - timedelta(hours=48)
+        end = current - timedelta(days=2)
+        print("HITTING NOT DESERT ROUTE")
     
     params = {'key':f'{api_key}', 'q':f'{location.latitude},{location.longitude}', 'dt':f'{end}', 'end_dt':f'{current}'}
 
@@ -118,7 +120,7 @@ def desert_weather_assessment(backcast):
         return f"It's rained {backcast.total_precip} recently here, but also been sunny for {backcast.sun_count} of the last 72 hours and has reached {backcast.high_temp}F. Use your discretion."
     if backcast.precip_count > 30 and backcast.avg_temp < 50:
         return f"It's rained {backcast.total_precip} recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. Use your discretion and please stay safe."
-    return f"Not sure how to assess this information."
+    return f"There's beenIt's rained {backcast.total_precip} recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. "
 
 def mountain_weather_assessment(backcast):
     """Assesses the weather to determine if an alpine area should be climbed on.

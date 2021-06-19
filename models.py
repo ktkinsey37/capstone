@@ -223,6 +223,9 @@ class Backcast(db.Model):
 
     location = db.relationship('Location', backref='backcast')
 
+    def __repr__(self):
+        return f"<Backcast #{self.id}, {self.sun_count + self.precip_count + self.cloud_count}>"
+
 def connect_db(app):
     """Connect this database to provided Flask app.
 

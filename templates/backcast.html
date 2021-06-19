@@ -10,6 +10,13 @@
 <h1>{{ location.latitude, location.longitude }}</h1>
 
 {% endif %}
+{% if location.is_snowy %}
+Alpine area
+{% endif %}
+
+{% if location.is_desert %}
+Desert area
+{% endif %}
 
 <table>
   <tr>
