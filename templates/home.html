@@ -2,24 +2,27 @@
 
 {% block content %}
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+<div class="col-12">
+  <h3>This website...</h3>
+  <p>...allows you to look at famous climbing areas (or your own) to create a "backcast" or backwards weather report. This allows you to see the past several days of weather to determine if sandstone or alpine locations are likely to suffer from previous precipitation. You can save backcasts and report on them if you're interested in comparing them to actual conditions on a climb or in a canyon.</p>
+
+</div>
 
 
-<a href="/global_locations">Global Locations</a>
-{% if g.user %}
-<a href="/user_locations">User Locations</a>
-{% endif %}
+<div class="mx-auto container-fluid row" style="height:500px; width:95%;">
+
+
 <br>
-<!DOCTYPE html>
-<html>
+<div id="container" class="container col-2">
+  <ul>
+  <a href="/popular_locations"><h6>Popular Locations</h6></a>
+  {% for location in popular_locations %}
+      <li><a href="/popular_locations/{{location.id}}">{{ location.name }}</a></li>
+  {% endfor %}
+  </ul>
+</div>
+
+<div class="container col-8">
   <head>
     <title>Event Click LatLng</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -27,7 +30,7 @@
     <script src="{{ url_for('static', filename='google_map.js') }}"></script>
   </head>
   <body>
-    <div id="map"></div>
+    <div id="map" style="width:100%; height:100%;"></div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
@@ -35,20 +38,34 @@
       async
     ></script>
   </body>
-</html>
+</div>
 
-<form method="POST" action="/backcast/new_backcast/0">
-    <label>Latitude:</label><br>
-    <input type="text" name="latbox" id="latbox"><br>
-    <label>Longitude</label><br>
-    <input type="text" name="lngbox" id="lngbox"><br><br>
-    <label>Is this an alpine location?</label>
-    <input type="radio" name="env" value="alpbox"><br>
-    <label>Sandstone location?</label>
-    <input type="radio" name="env" value="desbox"><br>
-    <label>Neither?</label>
-    <input type="radio" name="env" value="neither"><br><br>
-    <button class="btn btn-outline-primary btn-sm">Build custom backcast</button>
+<div class="container col-2">
+
+  <form method="POST" action="/backcast/new_backcast/custom_backcast" style="position: absolute; bottom: 0;">
+    {{ form.hidden_tag() }}
+
+    {% for field in form if field.widget.input_type != 'hidden' %}
+      {% for error in field.errors %}
+        <span class="text-danger">{{ error }}</span>
+      {% endfor %}
+      <li>
+          <br>
+
+          {{field.label}} {{ field(class="form-control") }}
+          
+      </li>
+
+    {% endfor %}
+
+    <button class="btn btn-primary btn-lg btn-block">Create Custom Backcast</button>
   </form>
+</div>
+
+
+</div>  
+
+
+</div>
 
 {% endblock %}

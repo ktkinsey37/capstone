@@ -1,96 +1,38 @@
-{% extends 'base.html' %}
-
 {% block content %}
-
-{% if location %}
- <h1>{{ location.name }}</h1>
-
- {% else %}
-
-<h1>{{ location.latitude, location.longitude }}</h1>
-
-{% endif %}
-{% if location.is_snowy %}
-Alpine area
-{% endif %}
-
-{% if location.is_desert %}
-Desert area
-{% endif %}
-
-<table>
-  <tr>
-    <th>Timestamp</th>
-    <th>Hours of sunny weather</th>
-    <th>Hours of cloudy weather</th>
-    <th>Hours of precipitation</th>
-    <th>Total inches of precipitation</th>
-    <th>Average inches of precipitation per hour</th>
-    <th>Average temperature F</th>
-    <th>High temperature F</th>
-    <th>Average windspeed</th>
-    <th>High windspeed</th>
-    <th>Assessment</th>
-    <th>User report</th>
-  </tr> 
-  <tr>
-    <td>{{ app_backcast.timestamp }}</td>
-    <td>{{ app_backcast.sun_count }}</td>
-    <td>{{ app_backcast.cloud_count }}</td>
-    <td>{{ app_backcast.precip_count }}</td>
-    <td>{{ app_backcast.total_precip }}</td>
-    <td>{{ app_backcast.avg_precip }}</td>
-    <td>{{ app_backcast.avg_temp }}</td>
-    <td>{{ app_backcast.high_temp }}</td>
-    <td>{{ app_backcast.avg_wind }}</td>
-    <td>{{ app_backcast.high_wind }}</td>
-    <td>{{ app_backcast.assessment }}</td>
-    <td>{{ app_backcast.user_report }}</td>
-  </tr>
-</table>
-
-
 <div class="container">
-
-  {% for day in backcast %}
-
-  <div class="hour_by_hour_box" style="display:block-inline">
-    {% if day['hours'][1] %}
-  <p>{{ day.date }}</p>
-  
   <table>
-      <tr>
-        <th>Hour</th>
-        <th>Condition</th>
-        <th>Temp</th>
-        <th>Precipitation (in)</th>
-      </tr>
-      {% for hour in day['hours'] %}
-      <tr>
-        <td>{{hour.time}}</td>
-        <td>{{hour.condition}}</td>
-        <td>{{hour.temp}}</td>
-        <td>{{hour.precip}}</td>
-      </tr>
-      {% endfor %}
-      
-    </table>
-  
-    {% endif %}
-  </div>
-  
-  
-  
-  {% endfor %}
+    <tr>
+      <th>Timestamp</th>
+      <th>Hours of sunny weather</th>
+      <th>Hours of cloudy weather</th>
+      <th>Hours of precipitation</th>
+      <th>Total inches of precipitation</th>
+      <th>Average inches of precipitation per hour</th>
+      <th>Average temperature F</th>
+      <th>High temperature F</th>
+      <th>Average windspeed</th>
+      <th>High windspeed</th>
+      <th>Assessment</th>
+      <th>User report</th>
+    </tr> 
+    <tr>
+      <td>{{ backcast.timestamp }}</td>
+      <td>{{ backcast.sun_count }}</td>
+      <td>{{ backcast.cloud_count }}</td>
+      <td>{{ backcast.precip_count }}</td>
+      <td>{{ backcast.total_precip }}</td>
+      <td>{{ backcast.avg_precip }}</td>
+      <td>{{ backcast.avg_temp }}</td>
+      <td>{{ backcast.high_temp }}</td>
+      <td>{{ backcast.avg_wind }}</td>
+      <td>{{ backcast.high_wind }}</td>
+      <td>{{ backcast.assessment }}</td>
+      <td>{{ backcast.user_report }}</td>
+    </tr>
+  </table>
 </div>
-
-<button id='show'>Show hourly report</button>
-<button id='hide'>Hide hourly report</button>
-
-<form method="GET" action="/global_locations">
-    <button class="btn btn-outline-primary btn-sm">Return to global locations</button>
-</form>
-
-<link rel="stylesheet" href="{{ url_for('static', filename='backcast.css') }}">
-<script src="{{ url_for('static', filename='backcast.js') }}"></script>
 {% endblock %}
+
+<form method="GET" action="/popular_locations">
+    <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
+</form>

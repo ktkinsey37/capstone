@@ -135,3 +135,12 @@ def mountain_weather_assessment(backcast):
     if backcast.precip_count > 30 and backcast.avg_temp <= 40:
         return f"It's precipitated {backcast.total_precip} inches recently here, over {backcast.precip_count} hours out of the last 7 days, with an average temp of {backcast.avg_temp}F. Use your discretion and please stay safe."
     return f"Not sure how to assess this information."
+
+# def location_env_determiner(location, form):
+#         if form.env.data is "alp":
+#             location.is_snowy = True, location.is_desert = False
+#         elif form.env.data is "sand":
+#             location.is_snowy = False, location.is_desert = True
+#         elif form.env.data is "none":
+#             location.is_snowy = False, location.is_desert = False
+#         return location

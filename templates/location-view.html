@@ -10,7 +10,7 @@
 <br> <br>
 Coordinates: {{ location.latitude, location.longitude }}
 
-<form method="GET" action="/locations/{{location.id}}/backcast">
+<form method="GET" action="/backcast/new_backcast/{{location.id}}">
     <button class="btn btn-outline-primary btn-sm">Create a Backcast</button>
 </form>
 <br>
@@ -18,8 +18,8 @@ Coordinates: {{ location.latitude, location.longitude }}
     <button class="btn btn-outline-primary btn-sm">View this area's backcasts</button>
 </form>
 <br>
-<form method="GET" action="/global_locations">
-    <button class="btn btn-outline-primary btn-sm">Return to global locations</button>
+<form method="GET" action="/popular_locations">
+    <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
 </form>
 
 {% endblock %}

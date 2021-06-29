@@ -3,37 +3,38 @@
 {% block body_class %}onboarding{% endblock %}
 
 {% block content %}
-
-<table>
-  <tr>
-    <th>Timestamp</th>
-    <th>Hours of sunny weather</th>
-    <th>Hours of cloudy weather</th>
-    <th>Hours of precipitation</th>
-    <th>Total inches of precipitation</th>
-    <th>Average inches of precipitation per hour</th>
-    <th>Average temperature F</th>
-    <th>High temperature F</th>
-    <th>Average windspeed</th>
-    <th>High windspeed</th>
-    <th>Assessment</th>
-    <th>User report</th>
-  </tr> 
-  <tr>
-    <td>{{ backcast.timestamp }}</td>
-    <td>{{ backcast.sun_count }}</td>
-    <td>{{ backcast.cloud_count }}</td>
-    <td>{{ backcast.precip_count }}</td>
-    <td>{{ backcast.total_precip }}</td>
-    <td>{{ backcast.avg_precip }}</td>
-    <td>{{ backcast.avg_temp }}</td>
-    <td>{{ backcast.high_temp }}</td>
-    <td>{{ backcast.avg_wind }}</td>
-    <td>{{ backcast.high_wind }}</td>
-    <td>{{ backcast.assessment }}</td>
-    <td>{{ backcast.user_report }}</td>
-  </tr>
-</table>
+<div class="container">
+  <table>
+    <tr>
+      <th>Timestamp</th>
+      <th>Hours of sunny weather</th>
+      <th>Hours of cloudy weather</th>
+      <th>Hours of precipitation</th>
+      <th>Total inches of precipitation</th>
+      <th>Average inches of precipitation per hour</th>
+      <th>Average temperature F</th>
+      <th>High temperature F</th>
+      <th>Average windspeed</th>
+      <th>High windspeed</th>
+      <th>Assessment</th>
+      <th>User report</th>
+    </tr> 
+    <tr>
+      <td>{{ backcast.timestamp }}</td>
+      <td>{{ backcast.sun_count }}</td>
+      <td>{{ backcast.cloud_count }}</td>
+      <td>{{ backcast.precip_count }}</td>
+      <td>{{ backcast.total_precip }}</td>
+      <td>{{ backcast.avg_precip }}</td>
+      <td>{{ backcast.avg_temp }}</td>
+      <td>{{ backcast.high_temp }}</td>
+      <td>{{ backcast.avg_wind }}</td>
+      <td>{{ backcast.high_wind }}</td>
+      <td>{{ backcast.assessment }}</td>
+      <td>{{ backcast.user_report }}</td>
+    </tr>
+  </table>
+</div>
 
   <div class="container">
     <form method="POST" id="location_form">

@@ -30,8 +30,26 @@
     {% endfor %}
 </table>
 
-<form method="GET" action="/global_locations/{{location.id}}">
+<form method="GET" action="/popular_locations/{{location.id}}">
     <button class="btn btn-outline-primary btn-sm">Return to location</button>
+</form>
+<br>
+<form method="GET" action="/backcast/new_backcast/{{location.id}}">
+  <button class="btn btn-outline-primary btn-sm">Create a Backcast</button>
+</form>
+<br>
+<form method="GET" action="/locations/{{location.id}}/backcasts">
+  <button class="btn btn-outline-primary btn-sm">View this area's backcasts</button>
+</form>
+<br>
+{% if g.user %}
+<form method="GET" action="/user_locations">
+  <button class="btn btn-outline-primary btn-sm">Return to user locations</button>
+</form>
+<br>
+{% endif %}
+<form method="GET" action="/popular_locations">
+  <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
 </form>
 
 {% endblock %}

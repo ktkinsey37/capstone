@@ -11,15 +11,12 @@
 6/16 8-9, 3:30-4
 6/17 4-7
 6/18 8:30-9:30
+6/29 8:30
 
 To Do:
 
-Implement is_snowy/is_desert for the latbox/lngbox
-
-Ideas for storing backcast:
--process it and store it without excess weather: "is_too_wet":"True"
-
-
-
-Assessment for mountains:
-
+Go through final visual stuff
+Getting buttons pretty
+Upload to heroku
+Form for adding admin powers?
+edit backcast form?

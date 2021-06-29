@@ -23,8 +23,8 @@ function initMap() {
       infoWindow.setContent(
         JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
         
-      ); $('#latbox').val(thisobject.lat())
-      $('#lngbox').val(thisobject.lng())
+      ); $('#latitude').val(thisobject.lat())
+      $('#longitude').val(thisobject.lng())
       infoWindow.open(map);
     });
   }

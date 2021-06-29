@@ -111,11 +111,13 @@ class Location(db.Model):
     )
 
     latitude = db.Column(
-                db.Float
+                db.Float,
+                default=0
     )
 
     longitude = db.Column(
-                db.Float
+                db.Float,
+                default=0
     )
 
     image_url = db.Column(
@@ -125,7 +127,8 @@ class Location(db.Model):
     )
 
     description = db.Column(
-                db.Text
+                db.Text,
+                default=""
     )
 
     is_desert = db.Column(
