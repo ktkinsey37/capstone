@@ -2,19 +2,27 @@
 
 {% block content %}
 
-{{ form.hidden_tag() }}
+<div class="container">
 
-{% for field in form if field.widget.input_type != 'hidden' %}
-  {% for error in field.errors %}
-    <span class="text-danger">{{ error }}</span>
-  {% endfor %}
-  <li>
-      <br>
+    <form method="POST" action="/add_admin">
+    {{ form.hidden_tag() }}
 
-      {{field.label}} {{ field(class="form-control") }}
-      
-  </li>
+    {% for field in form if field.widget.input_type != 'hidden' %}
+    {% for error in field.errors %}
+        <span class="text-danger">{{ error }}</span>
+    {% endfor %}
+    <li>
+        
 
-{% endfor %}
+        {{field.label}} {{ field(class="form-control") }}
+        
+    </li>
+
+    {% endfor %}
+
+    <button class="btn btn-primary btn-lg btn-block">Add admin</button>
+    </form>
+</div>
+
 
 {% endblock %}

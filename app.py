@@ -118,29 +118,37 @@ def logout():
 def add_admin():
 
     try:
+        
         if g.user.authority == 'admin':
+
 
             form = AddAdmin()
 
-
+                
             if form.validate_on_submit():
-                new_admin = User.query.get_or_404(username=form.data.name)
 
+                print("FORM VALIDATED")
 
+                
+              
+                new_admin = User.query.filter_by(username=form.data['name']).first()
                 new_admin.authority = 'admin'
+
+                print(new_admin, "***************************")
 
                 db.session.add(new_admin)
                 db.session.commit()
 
-                return render_template('/')
+                return redirect('/', code=302)
             
             else:
                 flash("There was an error processing the form.", 'danger')
-                return render_template('add_admin.html', form=form)
+                return render_template('add-admin.html', form=form)
 
         else:
             flash('You do not have the proper authority to visit this page.')
             return redirect('/', code=302)
+
     except (AttributeError):
         flash('There is no user currently signed in')
         return redirect('/', code=302)
