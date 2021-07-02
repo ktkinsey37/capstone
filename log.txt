@@ -12,13 +12,15 @@
 6/17 4-7
 6/18 8:30-9:30
 6/29 8:30
+6/30 8-9
 
 To Do:
 
 Go through final visual stuff
 Getting buttons pretty
 Upload to heroku
-Form for adding admin powers?
-edit backcast form?
+edit backcast form
+implement area images (non domain images?)
+testing
 
-START WORKING ON ADD-ADMIN FORM
+

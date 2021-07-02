@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, jsonify, flash, redirect, ses
 import random, requests
 from flask_debugtoolbar import DebugToolbarExtension
 from datetime import datetime, timedelta
-from forms import LocationForm, BackcastEditForm, UserAddForm, EditUserProfileForm, LoginForm, CustomBackcastForm, AddAdmin
+from forms import LocationForm, LocationEditForm, BackcastEditForm, UserAddForm, EditUserProfileForm, LoginForm, CustomBackcastForm, AddAdmin
 from sqlalchemy.exc import IntegrityError
 from models import Location, db, connect_db, Backcast, User
 
@@ -134,7 +134,6 @@ def add_admin():
                 new_admin = User.query.filter_by(username=form.data['name']).first()
                 new_admin.authority = 'admin'
 
-                print(new_admin, "***************************")
 
                 db.session.add(new_admin)
                 db.session.commit()
@@ -152,7 +151,6 @@ def add_admin():
     except (AttributeError):
         flash('There is no user currently signed in')
         return redirect('/', code=302)
-
 
 @app.route("/")
 def homepage():
@@ -268,6 +266,59 @@ def location_backcasts(location_id):
 
     return render_template('location-backcast-list.html', location=location, backcasts=backcasts)
 
+@app.route('/locations/<int:location_id>/edit', methods=["GET", "POST"])
+def location_edit(location_id):
+    """Edit a location's details"""
+
+    location = Location.query.get_or_404(location_id)
+
+    form = LocationEditForm()
+
+    if form.validate_on_submit():
+        
+        if form.env.data == "alp":
+            location.name=form.name.data
+            location.user_id = g.user.id
+            location.location = form.location.data
+            location.latitude=form.latitude.data
+            location.longitude=form.longitude.data
+            location.image_url=form.image_url.data
+            location.description=form.description.data
+            location.is_snowy=True
+            location.is_desert=False
+
+        elif form.env.data == "sand":
+            location.name=form.name.data
+            location.user_id = g.user.id
+            location.location = form.location.data
+            location.latitude=form.latitude.data
+            location.longitude=form.longitude.data
+            location.image_url=form.image_url.data
+            location.description=form.description.data
+            location.is_snowy=False
+            location.is_desert=True
+
+        elif form.env.data == "none":
+            location.name=form.name.data
+            location.user_id = g.user.id
+            location.location = form.location.data
+            location.latitude=form.latitude.data
+            location.longitude=form.longitude.data
+            location.image_url=form.image_url.data
+            location.description=form.description.data
+            location.is_snowy=False
+            location.is_desert=False
+
+        
+        db.session.add(location)
+        db.session.commit()
+
+        return render_template('location-view.html', location=location)
+
+    else:
+
+        return render_template('location-edit.html', location=location, form=form)
+
 ############################### USER LOCATION ROUTES ###################################
 @app.route("/user_locations")
 def show_user_locations():
@@ -279,7 +330,7 @@ def show_user_locations():
 
         return render_template("user-location-list.html", locations=locations)
 
-    flash("You must be logged in to your account to create user locations", 'danger')
+    flash("You must be logged in to your account to create/view user locations", 'danger')
     return redirect('/', code=302)
 
 @app.route("/user_locations/add", methods=["GET", "POST"])
@@ -351,11 +402,19 @@ def location_backcasts_show(location_id):
 
     backcasts = Backcast.query.filter_by(location_id=location_id).all()
 
-    return render_template('location-backcast-list.html', location=location, backcasts=backcasts)
+    return render_template('location-view.html', location=location, backcasts=backcasts)
 
 ########################### BACKCAST ROUTES ############################
-@app.route('/backcast/<int:backcast_id>', methods=["GET", "POST"])
-def show_full_or_edit_backcast(backcast_id):
+@app.route('/backcast/<int:backcast_id>')
+def show_saved_backcast(backcast_id):
+
+    backcast = Backcast.query.get_or_404(backcast_id)
+
+    return render_template('backcast.html', backcast=backcast)
+
+
+@app.route('/backcast/<int:backcast_id>/edit', methods=["GET", "POST"])
+def edit_backcast(backcast_id):
 
         form = BackcastEditForm()
 
@@ -370,7 +429,7 @@ def show_full_or_edit_backcast(backcast_id):
             return render_template("backcast-edit.html", form=form, backcast=backcast)
 
         else:
-            return render_template('backcast.html', backcast=backcast)
+            return render_template('backcast-edit.html', form=form, backcast=backcast)
 
 @app.route('/backcast/new_backcast/custom_backcast', methods=["GET", "POST"])
 def create_custom_location_backcast():

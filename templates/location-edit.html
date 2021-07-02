@@ -3,12 +3,25 @@
 {% block body_class %}onboarding{% endblock %}
 
 {% block content %}
-
    <div class="mx-auto container row" style="height:670px; width:100%;">
 
 
     <br>
-    <div class="container col-9">
+    <div id="container" class="container col-2">
+      <ul>
+          Name:<li>{{ location.name }}</li><br>
+          Directions:<li>{{ location.location}}</li><br>
+          Latitude:<li>{{ location.latitude }}</li><br>
+          Longitude:<li>{{ location.longitude}}</li><br>
+          Image: <li>{{ location.image }}</li><br>
+          Description:<li>{{ location.description}}</li><br>
+          Is an alpine area?<li>{{ location.is_snowy }}</li><br>
+          Is a sandstone area?<li>{{ location.is_desert}}</li><br>
+      </ul>
+    </div>
+
+    <br>
+    <div class="container col-8">
       <head>
         <title>Event Click LatLng</title>
         <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -26,9 +39,9 @@
       </body>
     </div>
     
-    <div class="container col-3">
+    <div class="container col-2">
     
-      <form method="POST" action="/user_locations/add" style="position: absolute; bottom: 0;">
+      <form method="POST" action="/locations/{{location.id}}/edit" style="position: absolute; bottom: 0;">
         {{ form.hidden_tag() }}
     
         {% for field in form if field.widget.input_type != 'hidden' %}
@@ -44,7 +57,7 @@
     
         {% endfor %}
     
-        <button class="btn btn-primary btn-lg btn-block">Add Custom Location</button>
+        <button class="btn btn-primary btn-lg btn-block">Update Custom Location</button>
       </form>
 
 {% endblock %}

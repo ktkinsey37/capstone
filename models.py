@@ -122,8 +122,7 @@ class Location(db.Model):
 
     image_url = db.Column(
                 db.Text,
-                default=""
-                # need a default image
+                default="https://images.pexels.com/photos/2335126/pexels-photo-2335126.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
     )
 
     description = db.Column(

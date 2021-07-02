@@ -41,6 +41,7 @@ def find_avg_and_highest_temp(forecast):
             if high_temp > hour['temp']:
                 high_temp = hour['temp']
     avg_temp = total_temp / hour_count
+    round(avg_temp, 2)
     return (avg_temp, high_temp)
 
 def find_avg_and_total_precip(forecast):
@@ -54,6 +55,7 @@ def find_avg_and_total_precip(forecast):
             if high_precip > hour['precip']:
                 high_precip = hour['precip']
     avg_precip = total_precip / hour_count
+    round(avg_precip, 2)
     return (avg_precip, total_precip)
 
 def find_avg_and_highest_wind(forecast):
@@ -67,6 +69,7 @@ def find_avg_and_highest_wind(forecast):
             if high_wind > hour['wind']:
                 high_wind = hour['wind']
     avg_wind = total_wind / hour_count
+    round(avg_wind, 2)
     return (avg_wind, high_wind)
 
 def build_backcast(api_key, base_url, location):
@@ -120,7 +123,7 @@ def desert_weather_assessment(backcast):
         return f"It's rained {backcast.total_precip} recently here, but also been sunny for {backcast.sun_count} of the last 72 hours and has reached {backcast.high_temp}F. Use your discretion."
     if backcast.precip_count > 30 and backcast.avg_temp < 50:
         return f"It's rained {backcast.total_precip} recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. Use your discretion and please stay safe."
-    return f"There's beenIt's rained {backcast.total_precip} recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. "
+    return f"It's rained {backcast.total_precip} recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. "
 
 def mountain_weather_assessment(backcast):
     """Assesses the weather to determine if an alpine area should be climbed on.

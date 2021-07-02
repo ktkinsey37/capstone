@@ -3,18 +3,18 @@
 {% block body_class %}onboarding{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container col-10">
   <table>
     <tr>
       <th>Timestamp</th>
-      <th>Hours of sunny weather</th>
-      <th>Hours of cloudy weather</th>
-      <th>Hours of precipitation</th>
-      <th>Total inches of precipitation</th>
-      <th>Average inches of precipitation per hour</th>
-      <th>Average temperature F</th>
-      <th>High temperature F</th>
-      <th>Average windspeed</th>
+      <th>Hrs sun</th>
+      <th>Hrs cloudy</th>
+      <th>Hrs precip</th>
+      <th>Total precip (in)</th>
+      <th>Avg precip (in/hr)</th>
+      <th>Avg temp F</th>
+      <th>High temp F</th>
+      <th>Avg windspeed</th>
       <th>High windspeed</th>
       <th>Assessment</th>
       <th>User report</th>
@@ -53,8 +53,8 @@
         </li>
 
       {% endfor %}
-
-      <button class="btn btn-primary btn-lg btn-block">Save Backcast</button>
+        <br>
+      <button class="btn btn-primary btn-lg btn-block col-2">Save Backcast</button>
     </form>
   </div>
 

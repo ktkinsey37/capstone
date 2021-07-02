@@ -2,24 +2,43 @@
 
 {% block content %}
 
-<h1>{{ location.name }}</h1>
-{{location.location}}
-<br>
-<div class="container">{{location.description}}</div>
+<div class="jumbotron col-10">
+    <h3 class="display-4">{{ location.name }}</h3>
 
-<br> <br>
-Coordinates: {{ location.latitude, location.longitude }}
+    <img class="location-image col-3" src="{% if location.image_url == '' %}{{'https://images.pexels.com/photos/2335126/pexels-photo-2335126.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'}}{% else %}{{location.image_url}}{% endif %}" width="33%" height="66%">
+    
+    <div class="container col-4 float-left">
+        <p class="lead">{{ location.description }}</p>
+    </div>
+    <p>{{ location.location }}</p>
+    <br>
+    <div class="container col-4">
+        <p>Coordinates: {{ location.latitude, location.longitude }}</p>
+    </div>
+    
+        <div class="container col-8">
+            <div class="row">
+                <form method="GET" action="/backcast/new_backcast/{{location.id}}">
+                    <button class="btn btn-outline-primary btn-sm">Create a backcast</button>
+                </form>
+                &nbsp;&nbsp;
+                <form method="GET" action="/locations/{{location.id}}/edit">
+                    <button class="btn btn-outline-primary btn-sm">Edit this location</button>
+                </form>
+                &nbsp;&nbsp;
+                <form method="GET" action="/locations/{{location.id}}/backcasts">
+                    <button class="btn btn-outline-primary btn-sm">View this area's backcasts</button>
+                </form>
+                &nbsp;&nbsp;
+                <form method="GET" action="/popular_locations">
+                    <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
+                </form>
+            </div>
+        </div>
 
-<form method="GET" action="/backcast/new_backcast/{{location.id}}">
-    <button class="btn btn-outline-primary btn-sm">Create a Backcast</button>
-</form>
-<br>
-<form method="GET" action="/locations/{{location.id}}/backcasts">
-    <button class="btn btn-outline-primary btn-sm">View this area's backcasts</button>
-</form>
-<br>
-<form method="GET" action="/popular_locations">
-    <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
-</form>
+
+
+  </div>
+
 
 {% endblock %}

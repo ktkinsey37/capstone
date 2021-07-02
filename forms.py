@@ -9,7 +9,7 @@ class AddAdmin(FlaskForm):
     name = StringField('User name of prospective admin', validators=[DataRequired()])
 
 class LocationForm(FlaskForm):
-    """Form for adding/editing messages."""
+    """Form for adding locations."""
 
     name = StringField('Name of Location', validators=[DataRequired()],  render_kw={"placeholder": "Eg: Indian Creek"})
     location = StringField('Brief description of how to get to location', render_kw={"placeholder": "Eg: An hour south of Moab, UT"})
@@ -20,7 +20,7 @@ class LocationForm(FlaskForm):
     env = RadioField('Climbing Environment', choices=[('sand','Sandstone'), ('alp','Alpine'), ('none', 'Neither')], validators=[DataRequired()])
 
 class LocationEditForm(FlaskForm):
-    """Form for adding/editing messages."""
+    """Form for editing locations."""
 
     name = StringField('Name of Location', validators=[DataRequired()],  render_kw={"placeholder": "Eg: Indian Creek"})
     location = StringField('Brief description of how to get to location', render_kw={"placeholder": "Eg: An hour south of Moab, UT"})
@@ -49,7 +49,6 @@ class UserAddForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-
 
 class LoginForm(FlaskForm):
     """Login form."""
