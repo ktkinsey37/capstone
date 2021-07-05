@@ -17,6 +17,8 @@ CURR_USER_KEY = "curr_user"
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgresql:///climbing-weather'))
 
+print(app.config['SQLALCHEMY_DATABASE_URI'])
+
 google_api_key = os.environ.get('google_api_key', False)
 api_key = os.environ.get('api_key', False)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
