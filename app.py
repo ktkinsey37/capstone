@@ -423,10 +423,11 @@ def edit_backcast(backcast_id):
         if form.validate_on_submit():
 
             backcast.user_report = form.user_report.data
+            location = Location.query.get_or_404(backcast.location_id)
   
             db.session.add(backcast)
             db.session.commit()
-            return render_template("backcast-edit.html", form=form, backcast=backcast)
+            return render_template("backcast.html", location=location, app_backcast=backcast)
 
         else:
             return render_template('backcast-edit.html', form=form, backcast=backcast)

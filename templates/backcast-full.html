@@ -18,46 +18,54 @@ Alpine area
 Desert area
 {% endif %}
 
-<div class="container col-10 remove-all-margin-padding">
+<div class="row">
+
+<div class="truncated-backcast container col-8 remove-all-margin-padding">
 <table style="text-align: center;">
-  <tr>
-    <th>Timestamp</th>
-    <th>Hrs sun</th>
-    <th>Hrs cloudy</th>
-    <th>Hrs precip</th>
-    <th>Total precip (in)</th>
-    <th>Avg precip (in/hr)</th>
-    <th>Avg temp F</th>
-    <th>High temp F</th>
-    <th>Avg windspeed</th>
-    <th>High windspeed</th>
-    <th>Assessment</th>
-    <th>User report</th>
-  </tr> 
-  <tr>
-    <td>{{ app_backcast.timestamp }}</td>
-    <td>{{ app_backcast.sun_count }}</td>
-    <td>{{ app_backcast.cloud_count }}</td>
-    <td>{{ app_backcast.precip_count }}</td>
-    <td>{{ app_backcast.total_precip }}</td>
-    <td>{{ app_backcast.avg_precip }}</td>
-    <td>{{ app_backcast.avg_temp }}</td>
-    <td>{{ app_backcast.high_temp }}</td>
-    <td>{{ app_backcast.avg_wind }}</td>
-    <td>{{ app_backcast.high_wind }}</td>
-    <td>{{ app_backcast.assessment }}</td>
-    <td>{{ app_backcast.user_report }}</td>
-  </tr>
+    <tr><th>Timestamp</th><td>{% if app_backcast.timestamp %}{{ app_backcast.timestamp }}{% else %} Right Now {% endif %}</td></tr>
+    <tr><th>Hrs sun</th><td>{{ app_backcast.sun_count }}</td></tr>
+    <tr><th>Hrs cloudy</th><td>{{ app_backcast.cloud_count }}</td></tr>
+    <tr><th>Hrs precip</th><td>{{ app_backcast.precip_count }}</td></tr>
+    <tr><th>Total precip (in)</th><td>{{ app_backcast.total_precip }}</td></tr>
+    <tr><th>Avg precip (in/hr)</th><td>{{ app_backcast.avg_precip }}</td></tr>
+    <tr><th>Avg temp F</th><td>{{ app_backcast.avg_temp }}</td></tr>
+    <tr><th>High temp F</th><td>{{ app_backcast.high_temp }}</td></tr>
+    <tr><th>Avg Wind MPH</th><td>{{ app_backcast.avg_wind }}</td></tr>
+    <tr><th>High Wind MPH</th><td>{{ app_backcast.high_wind }}</td></tr>
+    <tr><th>Assessment</th><td>{{ app_backcast.assessment }}</td></tr>
+    <tr><th>User Report</th><td>{{ app_backcast.user_report }}</td></tr>
 </table>
+<hr>
+<div class="col-2 container buttons-container">
+
+  <button class="btn btn-outline-primary btn-sm" id='show'>Show hourly report</button>
+<button class="btn btn-outline-primary btn-sm" id='hide'>Hide hourly report</button>
+<br><br>
+{% if app_backcast.id %}
+<form method="GET" action="/backcast/{{ app_backcast.id }}/edit">
+  <button class="btn btn-outline-primary btn-sm">Edit User Report</button>
+</form>
+<br>
+{% endif %}
+
+<form method="GET" action="/">
+  <button class="btn btn-outline-primary btn-sm">Home</button>
+</form>
+<br>
+<form method="GET" action="/popular_locations">
+    <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
+</form>
+</div>
+</div>
 </div>
 
-<div class="container remove-all-margin-padding">
+<div id="hour_by_hour_box" class="backcast-box container remove-all-margin-padding">
 
   {% for day in backcast %}
-  <div id="day-box" class="container">
 
-  <div class="hour_by_hour_box" style="display:block-inline">
-    {% if day['hours'][1] %}
+        {% if day['hours'][1] %}
+  <div class="day-box" >
+
   <p>{{ day.date }}</p>
   
   <table>
@@ -78,25 +86,14 @@ Desert area
       
     </table>
   
-    {% endif %}
+
   </div>
-  
+      {% endif %}
   
   
   {% endfor %}
 </div>
-</div>
 
-<button class="btn btn-outline-primary btn-sm" id='show'>Show hourly report</button>
-<button class="btn btn-outline-primary btn-sm" id='hide'>Hide hourly report</button>
-<br><br>
-<form method="GET" action="/">
-  <button class="btn btn-outline-primary btn-sm">Home</button>
-</form>
-<br>
-<form method="GET" action="/popular_locations">
-    <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
-</form>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='backcast.css') }}">
 <script src="{{ url_for('static', filename='backcast.js') }}"></script>
