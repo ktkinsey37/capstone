@@ -1,6 +1,5 @@
 import os
 
-from capstone_api_keys import google_api_key, api_key
 from weather_helper import LocationBuilder, mountain_weather_assessment, desert_weather_assessment, build_backcast, find_avg_and_highest_wind, find_avg_and_total_precip, find_avg_and_highest_temp, check_for_precip, check_for_sun, check_for_clouds
 from flask_wtf import FlaskForm
 from flask import Flask, render_template, request, jsonify, flash, redirect, session, g
@@ -18,6 +17,8 @@ CURR_USER_KEY = "curr_user"
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgresql:///climbing-weather'))
 
+google_api_key = os.environ.get('google_api_key', False)
+api_key = os.environ.get('api_key', False)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False

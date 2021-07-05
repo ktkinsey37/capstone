@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, RadioField
 from wtforms.fields.core import BooleanField, FloatField
-from wtforms.validators import DataRequired, Email, Length
+from wtforms.validators import DataRequired, Email, Length, email_validator
 
 class AddAdmin(FlaskForm):
     """Form for one admin user to add another"""
