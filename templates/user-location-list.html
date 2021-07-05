@@ -4,15 +4,15 @@
 <div class="container">
   
 <ul>{% for location in locations %}
-    <li><a href="/user_locations/{{location.id}}">{{ location.name }}</a></li>
+    <li style="text-align:center"><a href="/user_locations/{{location.id}}">{{ location.name }}</a></li>
 {% endfor %}</ul>
 
-
-<form method="GET" action="/user_locations/add">
+<br>
+<form style="text-align:center" method="GET" action="/user_locations/add">
   <button class="btn btn-outline-primary btn-sm">Add New Location to Your List</button>
 </form>
 <br>
-<form method="GET" action="/">
+<form style="text-align:center" method="GET" action="/">
   <button class="btn btn-outline-primary btn-sm">Home</button>
 </form>
 

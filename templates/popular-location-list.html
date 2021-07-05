@@ -4,18 +4,18 @@
 <div class="container">
 
   <ul>{% for location in locations %}
-      <li><a href="/popular_locations/{{location.id}}">{{ location.name }}</a></li>
+      <li style="text-align:center"><a href="/popular_locations/{{location.id}}">{{ location.name }}</a></li>
   {% endfor %}</ul>
   <br>
 
   {% if g.user.authority == "admin" %}
-  <form method="GET" action="/popular_locations/add">
+  <form style="text-align:center" method="GET" action="/popular_locations/add">
       <button class="btn btn-outline-primary btn-sm">Add New popular Location</button>
   </form>
   <br>
   {% endif %}
 
-  <form method="GET" action="/">
+  <form style="text-align:center" method="GET" action="/">
     <button class="btn btn-outline-primary btn-sm">Home</button>
   </form>
 

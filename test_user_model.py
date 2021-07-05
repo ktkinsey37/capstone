@@ -1,7 +1,5 @@
 """User model tests."""
 
-# run these tests like:
-#
 #    python -m unittest test_user_model.py
 
 
@@ -10,27 +8,15 @@ from unittest import TestCase
 
 from models import db, User, Location, Backcast
 
-# BEFORE we import our app, let's set an environmental variable
-# to use a different database for tests (we need to do this
-# before we import our app, since that will have already
-# connected to the database
-
 os.environ['DATABASE_URL'] = "postgresql:///climbing-weather-test"
 
-
-# Now we can import app
-
 from app import app
-
-# Create our tables (we do this here, so we only create the tables
-# once for all tests --- in each test, we'll delete the data
-# and create fresh new clean test data
 
 db.create_all()
 
 
 class UserModelTestCase(TestCase):
-    """Test views for messages."""
+    """Test basics of User model"""
 
     def setUp(self):
         """Create test client, add sample data."""
@@ -54,9 +40,9 @@ class UserModelTestCase(TestCase):
         db.session.add(u)
         db.session.commit()
 
-        # User should have no messages & no followers
-        self.assertEqual(len(u.messages), 0)
-        self.assertEqual(len(u.followers), 0)
+        # User should have default authority and proper username
+        self.assertEqual(u.authority, "user")
+        self.assertEqual(u.username, "testuser")
 
         # User repr method works properly
         self.assertEqual(repr(u), f'<User #{u.id}: testuser, test@test.com>')
@@ -64,41 +50,26 @@ class UserModelTestCase(TestCase):
         db.session.delete(u)
         db.session.commit()
 
-    def test_user_model_following(self):
-        """Do the following methods work for users?"""
+    def test_user_authority(self):
+        """"Does a user with admin work"""
 
-        # Adds 2 users and links them via follow
         u = User(
             email="test@test.com",
             username="testuser",
-            password="HASHED_PASSWORD"
+            password="HASHED_PASSWORD",
+            authority="admin"
         )
 
-        u2 = User(
-            email="test2@test.com",
-            username="testuser2",
-            password="HASHED_PASSWORD"
-        )
-
+        # User can be created and added
         db.session.add(u)
-        db.session.add(u2)
-        u.followers.append(u2)
         db.session.commit()
 
-        # Checks that, once following, both users show that relationship
-        self.assertEqual(u.followers[0].id, u2.id)
-        self.assertEqual(u2.following[0].id, u.id)
-
-        u.followers.remove(u2)
-        db.session.commit()
-
-        # Unfollows and verifies the relationship is broken
-        self.assertEqual(len(u.followers), 0)
-        self.assertEqual(len(u2.following), 0)
+        # User should have admin authority
+        self.assertEqual(u.authority, "admin")
 
         db.session.delete(u)
-        db.session.delete(u2)
         db.session.commit()
+
 
     def test_user_creation_failures(self):
         """Will the creation of users fail when passed incorrect info?"""
@@ -124,11 +95,8 @@ class UserModelTestCase(TestCase):
         db.session.add(u)
         db.session.commit()
 
-        # self.asserError(whenever they commit?)
-        # db.session.delete(u)
-        # db.session.delete(u2)
-        # db.session.delete(u3)
-        # db.session.commit()
+        # self.assertWarns(SAWarning, db.session.commit)
+        # Can we talk about how to deal with assertWarns/Raises?
 
     def test_user_authentication(self):
         """Does user properly authenticate?"""
@@ -143,9 +111,10 @@ class UserModelTestCase(TestCase):
         db.session.commit()
 
         # Checkes if the authentication process works properly and fails properly
+        # For some reason this fails
         self.assertEqual(User.authenticate('testuser', 'HASHED_PASSWORD'), u)
         self.assertEqual(User.authenticate('testuse', 'HASHED_PASSWORD'), False)
-        self.assertEqual(User.authenticate('testuser', 'HASHED_PASSWORD'), False)
+        self.assertEqual(User.authenticate('testuser', 'HASHED_PASSWOR'), False)
 
         db.session.delete(u)
         db.session.commit()

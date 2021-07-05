@@ -198,9 +198,9 @@ def add_popular_location():
                                             latitude=form.latitude.data,
                                             longitude=form.longitude.data,
                                             image_url=form.image_url.data,
-                                            description=form.description.data,
                                             is_snowy=True,
                                             is_desert=False,
+                                            description=form.description.data,
                                             )
 
                     if form.env.data == "sand":

@@ -18,17 +18,18 @@ Alpine area
 Desert area
 {% endif %}
 
-<table>
+<div class="container col-10 remove-all-margin-padding">
+<table style="text-align: center;">
   <tr>
     <th>Timestamp</th>
-    <th>Hours of sunny weather</th>
-    <th>Hours of cloudy weather</th>
-    <th>Hours of precipitation</th>
-    <th>Total inches of precipitation</th>
-    <th>Average inches of precipitation per hour</th>
-    <th>Average temperature F</th>
-    <th>High temperature F</th>
-    <th>Average windspeed</th>
+    <th>Hrs sun</th>
+    <th>Hrs cloudy</th>
+    <th>Hrs precip</th>
+    <th>Total precip (in)</th>
+    <th>Avg precip (in/hr)</th>
+    <th>Avg temp F</th>
+    <th>High temp F</th>
+    <th>Avg windspeed</th>
     <th>High windspeed</th>
     <th>Assessment</th>
     <th>User report</th>
@@ -48,25 +49,26 @@ Desert area
     <td>{{ app_backcast.user_report }}</td>
   </tr>
 </table>
+</div>
 
-
-<div class="container">
+<div class="container remove-all-margin-padding">
 
   {% for day in backcast %}
+  <div id="day-box" class="container">
 
   <div class="hour_by_hour_box" style="display:block-inline">
     {% if day['hours'][1] %}
   <p>{{ day.date }}</p>
   
   <table>
-      <tr>
+      <tr style="text-align: center;">
         <th>Hour</th>
         <th>Condition</th>
         <th>Temp</th>
-        <th>Precipitation (in)</th>
+        <th>Precip (in)</th>
       </tr>
       {% for hour in day['hours'] %}
-      <tr>
+      <tr style="text-align: center;">
         <td>{{hour.time}}</td>
         <td>{{hour.condition}}</td>
         <td>{{hour.temp}}</td>
@@ -82,6 +84,7 @@ Desert area
   
   
   {% endfor %}
+</div>
 </div>
 
 <button class="btn btn-outline-primary btn-sm" id='show'>Show hourly report</button>

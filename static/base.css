@@ -9,10 +9,18 @@ padding: 0;
 list-style-type: none;
 }
 
+/* .remove-all-margin-padding{
+margin:0 ! important;
+padding:0 ! important;
+} */
 
-#container{
-margin: 0;
-padding: 0;
+#day-box{
+    flex: 25%
+}
+
+.container{
+margin: 0 ! important;
+padding: 0 ! important;
 }
 
 .location-image{

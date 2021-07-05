@@ -11,7 +11,7 @@ def check_for_precip(forecast):
     for day in forecast:
         for hour in day['hours']:
             if any(word in hour['condition'] for word in bad_weather_words):
-               precip_count += 0
+               precip_count += 1
     return precip_count
 
 def check_for_sun(forecast):
@@ -41,7 +41,8 @@ def find_avg_and_highest_temp(forecast):
             if high_temp > hour['temp']:
                 high_temp = hour['temp']
     avg_temp = total_temp / hour_count
-    round(avg_temp, 2)
+    avg_temp = round(avg_temp, 2)
+    high_temp = round(high_temp, 2)
     return (avg_temp, high_temp)
 
 def find_avg_and_total_precip(forecast):
@@ -55,7 +56,8 @@ def find_avg_and_total_precip(forecast):
             if high_precip > hour['precip']:
                 high_precip = hour['precip']
     avg_precip = total_precip / hour_count
-    round(avg_precip, 2)
+    avg_precip = round(avg_precip, 2)
+    total_precip = round(total_precip, 2)
     return (avg_precip, total_precip)
 
 def find_avg_and_highest_wind(forecast):
@@ -69,7 +71,8 @@ def find_avg_and_highest_wind(forecast):
             if high_wind > hour['wind']:
                 high_wind = hour['wind']
     avg_wind = total_wind / hour_count
-    round(avg_wind, 2)
+    avg_wind = round(avg_wind, 2)
+    high_wind = round(high_wind, 2)
     return (avg_wind, high_wind)
 
 def build_backcast(api_key, base_url, location):
@@ -79,12 +82,10 @@ def build_backcast(api_key, base_url, location):
 
     if location.is_desert:
         end = current - timedelta(days=3)
-        print("HITTING DESERT ROUTE")
     elif location.is_snowy:
         end = current - timedelta(days=7) #need to upgrade to get farther back
     else:
         end = current - timedelta(days=2)
-        print("HITTING NOT DESERT ROUTE")
     
     params = {'key':f'{api_key}', 'q':f'{location.latitude},{location.longitude}', 'dt':f'{end}', 'end_dt':f'{current}'}
 
@@ -138,12 +139,3 @@ def mountain_weather_assessment(backcast):
     if backcast.precip_count > 30 and backcast.avg_temp <= 40:
         return f"It's precipitated {backcast.total_precip} inches recently here, over {backcast.precip_count} hours out of the last 7 days, with an average temp of {backcast.avg_temp}F. Use your discretion and please stay safe."
     return f"Not sure how to assess this information."
-
-# def location_env_determiner(location, form):
-#         if form.env.data is "alp":
-#             location.is_snowy = True, location.is_desert = False
-#         elif form.env.data is "sand":
-#             location.is_snowy = False, location.is_desert = True
-#         elif form.env.data is "none":
-#             location.is_snowy = False, location.is_desert = False
-#         return location
