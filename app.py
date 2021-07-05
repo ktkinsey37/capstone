@@ -15,7 +15,7 @@ app = Flask(__name__)
 CURR_USER_KEY = "curr_user"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql:///climbing-weather'))
+    os.environ.get('DATABASE_URL', 'postgres:///climbing-weather').replace("://", "ql://", 1))
 
 print(app.config['SQLALCHEMY_DATABASE_URI'])
 
