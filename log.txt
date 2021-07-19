@@ -16,7 +16,14 @@
 
 To Do:
 
-Upload to heroku
-testing
-
+UX/UI
+    buttons
+    tables
+    round up milliseconds and milliminutes lat/lng
+submitting to springboard separataely
+(database sektch, api description)
+README.MD
+    Make it good
+    How to clone the repo and create the project on your machine
+    How to use it
 

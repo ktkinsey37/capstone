@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 print(app.config['SQLALCHEMY_DATABASE_URI'])
 
 google_api_key = os.environ.get('google_api_key', False)
-api_key = os.environ.get('api_key', False)
+api_key = os.environ.get('api_key', '2963e96aecde4c5093c215021211406')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
