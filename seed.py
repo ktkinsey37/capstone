@@ -12,6 +12,7 @@ Location.query.delete()
 password = 'password'
 hashed_pwd = bcrypt.generate_password_hash(password).decode('utf-8')
 
+
 admin = User(id=1,username="admin",email='ktkinsey37@gmail.com',password=hashed_pwd,authority='admin')
 no_location_user = User(id=0,username='default_custom',email='fake',password='fake',authority='user')
 loc0 = Location(id=0,user_id=0,name='custom_location')
@@ -25,6 +26,7 @@ Yosemite = Location(user_id=1,name="Yosemite Valley",location="Couple hours East
 
 db.session.add(admin)
 db.session.add(no_location_user)
+db.session.commit()
 db.session.add(loc0)
 db.session.add(RR)
 db.session.add(WR)
