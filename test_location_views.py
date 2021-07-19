@@ -26,7 +26,7 @@ class UserViewTestCase(TestCase):
         """Create test client, add sample data."""
 
         User.query.delete()
-        Message.query.delete()
+        Location.query.delete()
 
         self.client = app.test_client()
 

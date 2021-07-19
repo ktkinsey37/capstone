@@ -20,7 +20,7 @@ Desert area
 
 <div class="row">
 
-<div class="truncated-backcast container col-8 remove-all-margin-padding">
+<div class="truncated-backcast container col-5 remove-all-margin-padding">
 <table style="text-align: center;">
     <tr><th>Timestamp</th><td>{% if app_backcast.timestamp %}{{ app_backcast.timestamp }}{% else %} Right Now {% endif %}</td></tr>
     <tr><th>Hrs sun</th><td>{{ app_backcast.sun_count }}</td></tr>
@@ -41,6 +41,17 @@ Desert area
 {% if app_backcast.id %}
 <form method="GET" action="/backcast/{{ app_backcast.id }}/edit">
   <button class="btn btn-outline-primary btn-sm">Edit User Report</button>
+</form>
+<br>
+
+{% endif %}
+
+{% if app_backcast.location_id == 0 %}
+<h1>
+{{ app_backcast.location_id }}
+</h1>
+<form method="GET" action="/locations/{{location.id}}/backcasts">
+  <button class="btn btn-outline-primary btn-sm">Return to location backcasts</button>
 </form>
 <br>
 

@@ -4,24 +4,22 @@
 
 <h1>{{ location.name }}</h1>
 
-<table>
+<table class="no-border">
     <tr>
-      <th>Backcast ID</th>
-      <th>Timestamp</th>
-      <th>Total precipitation</th>
-      <th>Climbing assessment</th>
+      <th style="text-align:center">Timestamp</th>
+      <th style="text-align:center">Total precipitation</th>
+      <th style="text-align:center">Climbing assessment</th>
     </tr>
 
     {% for backcast in backcasts %}
 
     <tr>
-      <td>{{backcast.id}}</td>
-      <td>{{backcast.timestamp}}</td>
-      <td>{{backcast.total_precip}}</td>
-      <td>{{backcast.assessment}}</td>
-      <td>
+      <td style="text-align:center">{{backcast.timestamp}}</td>
+      <td style="text-align:center">{{backcast.total_precip}}</td>
+      <td style="text-align:center">{{backcast.assessment}}</td>
+      <td class='no-border'>
         <form method="GET" action="/backcast/{{backcast.id}}/edit">
-          &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-outline-primary btn-sm">View/add trip report to this backcast</button>
+          <button class="btn btn-outline-primary btn-sm">View/add trip report to this backcast</button>
         </form>
         </td>
     </tr>
@@ -31,29 +29,27 @@
 
     {% endfor %}
 </table>
-
-<div class="container">
-<form method="GET" action="/popular_locations/{{location.id}}">
+<br>
+<div style="margin-left: 20px;" class="container">
+  <div class="row">
+    <form method="GET" action="/popular_locations/{{location.id}}">
     <button class="btn btn-outline-primary btn-sm">Return to location</button>
-</form>
-<br>
-<form method="GET" action="/backcast/new_backcast/{{location.id}}">
-  <button class="btn btn-outline-primary btn-sm">Create a Backcast</button>
-</form>
-<br>
-<form method="GET" action="/locations/{{location.id}}/backcasts">
-  <button class="btn btn-outline-primary btn-sm">View this area's backcasts</button>
-</form>
-<br>
-{% if g.user %}
-<form method="GET" action="/user_locations">
-  <button class="btn btn-outline-primary btn-sm">Return to user locations</button>
-</form>
-<br>
-{% endif %}
-<form method="GET" action="/popular_locations">
-  <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
-</form>
+    </form>
+    &nbsp;&nbsp;
+    <form method="GET" action="/backcast/new_backcast/{{location.id}}">
+      <button class="btn btn-outline-primary btn-sm">Create a Backcast</button>
+    </form>
+    &nbsp;&nbsp;
+    {% if g.user %}
+    <form method="GET" action="/user_locations">
+      <button class="btn btn-outline-primary btn-sm">Return to user locations</button>
+    </form>
+    &nbsp;&nbsp;
+    {% endif %}
+    <form method="GET" action="/popular_locations">
+      <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
+    </form>
+  </div>
 
 </div>
 

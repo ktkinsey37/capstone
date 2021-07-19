@@ -166,7 +166,7 @@ class Backcast(db.Model):
     timestamp = db.Column(
         db.DateTime,
         nullable=False,
-        default=datetime.utcnow(),
+        default=datetime.utcnow().strftime("%m-%d-%Y %H:%M:%S"),
     )
 
     sun_count = db.Column(

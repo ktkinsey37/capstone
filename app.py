@@ -380,14 +380,6 @@ def add_user_location():
                                     is_snowy=False,
                                     is_desert=False,
                                     )
-
-            # if form.env.data is "alp":
-            #     location.is_snowy = True, location.is_desert = False
-            # elif form.env.data is "sand":
-            #     location.is_snowy = False, location.is_desert = True
-            # elif form.env.data is "none":
-            #     location.is_snowy = False, location.is_desert = False
-            # This throws a scope error (i think) for some reason?
             
             db.session.add(location)
             db.session.commit()

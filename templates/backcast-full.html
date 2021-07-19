@@ -20,7 +20,7 @@ Desert area
 
 <div class="row">
 
-<div class="truncated-backcast container col-8 remove-all-margin-padding">
+<div class="truncated-backcast container col-6 remove-all-margin-padding">
 <table style="text-align: center;">
     <tr><th>Timestamp</th><td>{% if app_backcast.timestamp %}{{ app_backcast.timestamp }}{% else %} Right Now {% endif %}</td></tr>
     <tr><th>Hrs sun</th><td>{{ app_backcast.sun_count }}</td></tr>
@@ -41,17 +41,29 @@ Desert area
   <button class="btn btn-outline-primary btn-sm" id='show'>Show hourly report</button>
 <button class="btn btn-outline-primary btn-sm" id='hide'>Hide hourly report</button>
 <br><br>
+
+{% if app_backcast.location_id != 0 %}
 {% if app_backcast.id %}
 <form method="GET" action="/backcast/{{ app_backcast.id }}/edit">
   <button class="btn btn-outline-primary btn-sm">Edit User Report</button>
 </form>
 <br>
+
 {% endif %}
 
+
+
+<form method="GET" action="/locations/{{location.id}}/backcasts">
+  <button class="btn btn-outline-primary btn-sm">Return to location backcasts</button>
+</form>
+<br>
+
+{% endif %}
 <form method="GET" action="/">
   <button class="btn btn-outline-primary btn-sm">Home</button>
 </form>
 <br>
+
 <form method="GET" action="/popular_locations">
     <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
 </form>
