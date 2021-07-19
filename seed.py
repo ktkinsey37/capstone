@@ -14,7 +14,7 @@ hashed_pwd = bcrypt.generate_password_hash(password).decode('utf-8')
 
 admin = User(id=1,username="admin",email='ktkinsey37@gmail.com',password=hashed_pwd,authority='admin')
 no_location_user = User(id=0,username='default_custom',email='fake',password='fake',authority='user')
-0 = Location(id=0,user_id=0,name='custom_location')
+loc0 = Location(id=0,user_id=0,name='custom_location')
 RR = Location(user_id=1,name="Red Rocks",location="Just West of Las Vegas, NV",latitude=36.10579962729647,longitude=-115.46661745232271,description="Tons of different routes on sandstone. Long, desert alpine, hard sport, bouldering, RR has it all. So good that Honnold moved to Vegas to be near it.",is_desert=True,is_snowy=False)
 WR = Location(user_id=1,name="Wind River Range",location="In between Lander and Pinedale, WY.",latitude=42.907429448436794,longitude=-109.47754858405727,description="Very alpine location. Includes WY's tallest peak and the famous Cirque of the Towers.",is_desert=False,is_snowy=True)
 CV = Location(user_id=1,name="Castle Valley",location="Just East of Moab, UT",latitude=38.6479991772182,longitude=-109.39796378889207,description="Several beautiful desert towers in an amazing location.",is_desert=True,is_snowy=False)
@@ -25,7 +25,7 @@ Yosemite = Location(user_id=1,name="Yosemite Valley",location="Couple hours East
 
 db.session.add(admin)
 db.session.add(no_location_user)
-db.session.add(0)
+db.session.add(loc0)
 db.session.add(RR)
 db.session.add(WR)
 db.session.add(CV)
