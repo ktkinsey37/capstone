@@ -8,7 +8,7 @@ from unittest import TestCase
 
 from models import db, User, Location, Backcast
 
-os.environ['DATABASE_URL'] = "postgresql:///climbing-weather-test"
+os.environ['DATABASE_URL'] = "postgres:///climbing-weather-test"
 
 from app import app
 

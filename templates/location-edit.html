@@ -11,8 +11,8 @@
       <ul>
           Name:<li>{{ location.name }}</li><br>
           Directions:<li>{{ location.location}}</li><br>
-          Latitude:<li>{{ location.latitude }}</li><br>
-          Longitude:<li>{{ location.longitude}}</li><br>
+          Latitude:<li>{{ location.latitude|round(5) }}</li><br>
+          Longitude:<li>{{ location.longitude|round(5)}}</li><br>
           Image: <li>{{ location.image }}</li><br>
           Description:<li>{{ location.description}}</li><br>
           Is an alpine area?<li>{{ location.is_snowy }}</li><br>
@@ -57,7 +57,7 @@
     
         {% endfor %}
     
-        <button class="btn btn-primary btn-lg btn-block">Update Custom Location</button>
+        <button class="btn btn-primary btn-lg btn-block">Update Location</button>
       </form>
 
 {% endblock %}

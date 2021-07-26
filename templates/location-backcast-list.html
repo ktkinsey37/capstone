@@ -39,16 +39,6 @@
     <form method="GET" action="/backcast/new_backcast/{{location.id}}">
       <button class="btn btn-outline-primary btn-sm">Create a Backcast</button>
     </form>
-    &nbsp;&nbsp;
-    {% if g.user %}
-    <form method="GET" action="/user_locations">
-      <button class="btn btn-outline-primary btn-sm">Return to user locations</button>
-    </form>
-    &nbsp;&nbsp;
-    {% endif %}
-    <form method="GET" action="/popular_locations">
-      <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
-    </form>
   </div>
 
 </div>

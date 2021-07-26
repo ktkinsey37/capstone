@@ -2,47 +2,36 @@
 
 {% block content %}
 
-<div class="jumbotron col-10">
-    <h3 class="display-4">{{ location.name }}</h3>
-
-    <img class="location-image col-3" src="{% if location.image_url == '' %}{{'https://images.pexels.com/photos/2335126/pexels-photo-2335126.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'}}{% else %}{{location.image_url}}{% endif %}" width="33%" height="66%">
-    
-    <div class="container col-4 float-left">
+<div class="row">
+    <div class="col-12 col-md-7">
+        <h3 class="display-4">{{ location.name }}</h3>
+        <p>{{ location.location }}</p>
         <p class="lead">{{ location.description }}</p>
-    </div>
-    <p>{{ location.location }}</p>
-    <br>
-    <div class="container col-4">
-        <p>Coordinates: {{ location.latitude, location.longitude }}</p>
-    </div>
-    
-        <div class="container col-8">
-            <div class="row">
-                <form method="GET" action="/backcast/new_backcast/{{location.id}}">
-                    <button class="btn btn-outline-primary btn-sm">Create a backcast</button>
-                </form>
-                &nbsp;&nbsp;
-                <form method="GET" action="/locations/{{location.id}}/edit">
-                    <button class="btn btn-outline-primary btn-sm">Edit this location</button>
-                </form>
-                &nbsp;&nbsp;
-                <form method="GET" action="/locations/{{location.id}}/backcasts">
-                    <button class="btn btn-outline-primary btn-sm">View this area's backcasts</button>
-                </form>
-                &nbsp;&nbsp;
-                <form method="GET" action="/popular_locations">
-                    <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
-                </form>
-                &nbsp;&nbsp;
-                <form method="GET" action="/user_locations">
-                    <button class="btn btn-outline-primary btn-sm">Return to user locations</button>
-                </form>
-            </div>
+        <p>Coordinates: {{ location.latitude|round(5), location.longitude|round(5) }}</p>
+        <div class="row">
+                    <form method="GET" class="col-12 col-md-4" action="/backcast/new_backcast/{{location.id}}">
+                        <button class="btn btn-outline-primary btn-sm">Create a backcast</button>
+                    </form>
+                
+                    <form method="GET" class="col-12 col-md-4" action="/locations/{{location.id}}/edit">
+                        <button class="btn btn-outline-primary btn-sm">Edit this location</button>
+                    </form>
+                   
+                    <form method="GET" class="col-12 col-md-4" action="/locations/{{location.id}}/backcasts">
+                        <button class="btn btn-outline-primary btn-sm">View this area's backcasts</button>
+                    </form>
         </div>
+    </div>
+
+    <div class="col-11 col-md-4 mx-auto">        
+        <img class="location-image" src="{% if location.image_url == '' %}{{'https://images.pexels.com/photos/2335126/pexels-photo-2335126.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'}}{% else %}{{location.image_url}}{% endif %}" style="width:100%; height:auto">
+    </div>
+ </div>
+
+</div>
 
 
-
-  </div>
+ 
 
 
 {% endblock %}

@@ -7,7 +7,7 @@
 
  {% else %}
 
-<h1>{{ location.latitude, location.longitude }}</h1>
+<h1>{{ location.latitude|round(5), location.longitude|round(5) }}</h1>
 
 {% endif %}
 {% if location.is_snowy %}
@@ -38,18 +38,12 @@ Desert area
 <hr>
 <div class="col-2 container buttons-container">
 
-{% if app_backcast.id %}
+  {% if app_backcast.location_id != 0 %}
 <form method="GET" action="/backcast/{{ app_backcast.id }}/edit">
   <button class="btn btn-outline-primary btn-sm">Edit User Report</button>
 </form>
 <br>
 
-{% endif %}
-
-{% if app_backcast.location_id == 0 %}
-<h1>
-{{ app_backcast.location_id }}
-</h1>
 <form method="GET" action="/locations/{{location.id}}/backcasts">
   <button class="btn btn-outline-primary btn-sm">Return to location backcasts</button>
 </form>
@@ -57,17 +51,6 @@ Desert area
 
 {% endif %}
 
-<form method="GET" action="/">
-  <button class="btn btn-outline-primary btn-sm">Home</button>
-</form>
-<br>
-<form method="GET" action="/locations/{{location.id}}/backcasts">
-  <button class="btn btn-outline-primary btn-sm">Return to location backcasts</button>
-</form>
-<br>
-<form method="GET" action="/popular_locations">
-    <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
-</form>
 </div>
 </div>
 </div>

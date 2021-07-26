@@ -106,8 +106,8 @@ def build_backcast(api_key, base_url, location):
 
 class LocationBuilder:
     def __init__(self, latitude, longitude, is_desert, is_snowy):
-        self.latitude = latitude
-        self.longitude = longitude
+        self.latitude = float(latitude)
+        self.longitude = float(longitude)
         self.is_desert = is_desert
         self.is_snowy = is_snowy
 
@@ -121,10 +121,10 @@ def desert_weather_assessment(backcast):
     if backcast.total_precip > 2:
         return "There's been over two inches(~5cm) of precip in the past 72 hrs, you probably shouldn't climb."
     if backcast.sun_count > 30 and backcast.high_temp > 40:
-        return f"It's rained {backcast.total_precip} recently here, but also been sunny for {backcast.sun_count} of the last 72 hours and has reached {backcast.high_temp}F. Use your discretion."
+        return f"It's rained {backcast.total_precip} in recently here, but also been sunny for {backcast.sun_count} of the last 72 hours and has reached {backcast.high_temp}F. Use your discretion."
     if backcast.precip_count > 30 and backcast.avg_temp < 50:
-        return f"It's rained {backcast.total_precip} recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. Use your discretion and please stay safe."
-    return f"It's rained {backcast.total_precip} recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. "
+        return f"It's rained {backcast.total_precip} in recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. Use your discretion and please stay safe."
+    return f"It's rained {backcast.total_precip} in recently here, over {backcast.precip_count} of the last 72 hours, with an average temp of {backcast.avg_temp}F. "
 
 def mountain_weather_assessment(backcast):
     """Assesses the weather to determine if an alpine area should be climbed on.

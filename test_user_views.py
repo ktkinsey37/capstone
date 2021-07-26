@@ -15,7 +15,7 @@ from models import db, User, Location, Backcast
 # before we import our app, since that will have already
 # connected to the database
 
-os.environ['DATABASE_URL'] = "postgresql:///climbing-weather-test"
+os.environ['DATABASE_URL'] = "postgres:///climbing-weather-test"
 
 # Now we can import app
 

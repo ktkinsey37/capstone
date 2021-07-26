@@ -14,16 +14,9 @@
 6/29 8:30
 6/30 8-9
 
-To Do:
+testing
 
-UX/UI
-    buttons
-    tables
-    round up milliseconds and milliminutes lat/lng
-submitting to springboard separataely
-(database sektch, api description)
-README.MD
-    Make it good
-    How to clone the repo and create the project on your machine
-    How to use it
-
+Finish up capstone
+Finish up node
+Start on express
+Career call

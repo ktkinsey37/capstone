@@ -2,14 +2,16 @@
 
 {% block content %}
 
-{% if location %}
- <h1>{{ location.name }}</h1>
+{% if location.name %}
 
- {% else %}
-
-<h1>{{ location.latitude, location.longitude }}</h1>
+<h3>{{ location.name }}</h3>
 
 {% endif %}
+
+<h3>{{ location.latitude|round(5), location.longitude|round(5) }}</h3>
+
+
+
 {% if location.is_snowy %}
 Alpine area
 {% endif %}
@@ -17,6 +19,20 @@ Alpine area
 {% if location.is_desert %}
 Desert area
 {% endif %}
+{% if app_backcast.location_id != 0 %}
+<div class="row">
+    <form method="GET" action="/backcast/{{ app_backcast.id }}/edit">
+    <button class="btn btn-outline-primary btn-sm">Edit User Report</button>
+  </form>
+  <form method="GET" action="/locations/{{location.id}}/backcasts">
+    <button class="btn btn-outline-primary btn-sm">Return to location backcasts</button>
+  </form>
+  {% endif %}
+
+  <button class="btn btn-outline-primary btn-sm" id='show'>Show hourly report</button>
+  <button class="btn btn-outline-primary btn-sm" id='hide'>Hide hourly report</button>
+
+</div>
 
 <div class="row">
 
@@ -36,37 +52,7 @@ Desert area
     <tr><th>User Report</th><td>{{ app_backcast.user_report }}</td></tr>
 </table>
 <hr>
-<div class="col-2 container buttons-container">
-
-  <button class="btn btn-outline-primary btn-sm" id='show'>Show hourly report</button>
-<button class="btn btn-outline-primary btn-sm" id='hide'>Hide hourly report</button>
 <br><br>
-
-{% if app_backcast.location_id != 0 %}
-{% if app_backcast.id %}
-<form method="GET" action="/backcast/{{ app_backcast.id }}/edit">
-  <button class="btn btn-outline-primary btn-sm">Edit User Report</button>
-</form>
-<br>
-
-{% endif %}
-
-
-
-<form method="GET" action="/locations/{{location.id}}/backcasts">
-  <button class="btn btn-outline-primary btn-sm">Return to location backcasts</button>
-</form>
-<br>
-
-{% endif %}
-<form method="GET" action="/">
-  <button class="btn btn-outline-primary btn-sm">Home</button>
-</form>
-<br>
-
-<form method="GET" action="/popular_locations">
-    <button class="btn btn-outline-primary btn-sm">Return to popular locations</button>
-</form>
 </div>
 </div>
 </div>
@@ -80,7 +66,7 @@ Desert area
 
   <p>{{ day.date }}</p>
   
-  <table>
+  <table class="col-12 col-md-6" style="max-width: 20%;">
       <tr style="text-align: center;">
         <th>Hour</th>
         <th>Condition</th>
